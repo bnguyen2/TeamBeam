@@ -12,6 +12,7 @@
     "start": "nodemon server/index.js"
   },
   "dependencies": {
+    "body-parser": "^1.18.2",
     "express": "^4.16.1",
     "react": "^16.0.0",
     "react-dom": "^16.0.0"
