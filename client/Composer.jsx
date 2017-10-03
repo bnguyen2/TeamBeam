@@ -20,7 +20,7 @@ export default class Composer extends React.Component {
   render() {
     return (
       <Grid>
-        <Row >
+        <Row>
           <Col className="user"> <UserHeader/> </Col>
         </Row>
         <Row>
