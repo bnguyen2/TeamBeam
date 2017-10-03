@@ -9,12 +9,16 @@
   },
   "scripts": {
     "bundle": "webpack -w",
-    "start": "nodemon server/index.js"
+    "start": "nodemon server/index.js",
+    "schema": "node db/schema.js"
   },
   "dependencies": {
     "body-parser": "^1.18.2",
+    "bookshelf": "^0.10.4",
     "express": "^4.16.1",
     "jquery": "^3.2.1",
+    "knex": "^0.13.0",
+    "pg": "^7.3.0",
     "react": "^16.0.0",
     "react-bootstrap": "^0.31.3",
     "react-dom": "^16.0.0",
