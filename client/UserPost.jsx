@@ -1,8 +1,9 @@
 import React from 'react';
 
 const UserPost = (props) => (
-	<div className="nav-bar">
-  Test
+	<div>
+		<h3> Recent Posts </h3>
+			<p> Awesome tracks! </p>
 	</div>
 )
 
