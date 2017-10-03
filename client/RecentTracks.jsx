@@ -1,9 +1,9 @@
 import React from 'react';
 
-const RecentTracks = (props) => {
+const RecentTracks = (props) => (
 	<div className="nav-bar">
 
 	</div>
-}
+)
 
-export default RecentTracks;
+export default RecentTracks

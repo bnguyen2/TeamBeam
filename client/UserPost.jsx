@@ -1,9 +1,10 @@
 import React from 'react';
 
-const AboutMe = (props) => {
+const UserPost = (props) => (
 	<div className="nav-bar">
-
+  Test
 	</div>
-}
+)
 
-export default AboutMe;
+
+export default UserPost

@@ -1,9 +1,10 @@
 import React from 'react';
 
-const UserHeader = (props) => {
+const AboutMe = (props) => (
 	<div className="nav-bar">
 
 	</div>
-}
+)
 
-export default UserHeader;
+export default AboutMe
+

@@ -1,9 +1,9 @@
 import React from 'react';
 
-const UserPost = (props) => {
+const Collaboration = (props) => (
 	<div className="nav-bar">
 
 	</div>
-}
+)
 
-export default UserPost;
+export default Collaboration
