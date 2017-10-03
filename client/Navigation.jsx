@@ -15,7 +15,7 @@ export default class Navigation extends React.Component {
 
   render() {
     return (
-      <Navbar>
+      <Navbar collapseOnSelect fluid>
              <Navbar.Header>
                <Navbar.Brand>
                  <a href="#">SoundConnect</a>
@@ -25,20 +25,19 @@ export default class Navigation extends React.Component {
 
             <Navbar.Collapse>
              <Nav>
-               <NavItem eventKey={1} href="#">Link1</NavItem>
-               <NavItem eventKey={2} href="#">Link2</NavItem>
-               <NavDropdown eventKey={3} title="Dropdown" id="basic-nav-dropdown">
-                 <MenuItem eventKey={3.1}>Action</MenuItem>
-                 <MenuItem eventKey={3.2}>Another action</MenuItem>
-                 <MenuItem eventKey={3.3}>Something else here</MenuItem>
-                 <MenuItem divider />
-                 <MenuItem eventKey={3.4}>Separated link</MenuItem>
-               </NavDropdown>
+               <NavItem eventKey={1} href="#">Home</NavItem>
+               <NavItem eventKey={2} href="#">Forum</NavItem>
+               <NavItem eventKey={3} href="#">Placeholder</NavItem>
+               <NavItem eventKey={4} href="#">Placeholder</NavItem>
              </Nav>
 
              <Nav pullRight>
-               <NavItem eventKey={1} href="#">Log Out</NavItem>
-               <NavItem eventKey={2} href="#">Log Out</NavItem>
+               <NavDropdown eventKey={5} title="Account" id="basic-nav-dropdown">
+                 <MenuItem eventKey={5.1}>Placeholder</MenuItem>
+                 <MenuItem eventKey={5.2}>Settings</MenuItem>
+                 <MenuItem divider />
+                 <MenuItem eventKey={5.3}>Log Out</MenuItem>
+               </NavDropdown>
              </Nav>
 
            </Navbar.Collapse>
