@@ -1,16 +1,16 @@
 import React from 'react';
-import { PageHeader, Image} from 'react-bootstrap';
+import { Grid, Row, Col, PageHeader, Thumbnail } from 'react-bootstrap';
 
+// <Thumbnail alt="350x350" src="https://getuikit.com/v2/docs/images/placeholder_600x400.svg" />
 
 const UserHeader = (props) => (
-	<div className="container">
-		<div>
-		<Image src="/assets/thumbnail.png" rounded />
-		  <PageHeader> Bao Nguyen </PageHeader>
-		  <div>Location: US, San Francisco [TBD Data] </div>
-		  <div>Age: 26 [TBD Data]</div>
-		</div>
-	</div>
+	<Grid>
+		<Col>
+			<PageHeader> Bao Nguyen </PageHeader>
+				<div>Location: US, San Francisco [TBD Data] </div>
+				<div>Age: 26 [TBD Data]</div>
+	  </Col>
+	</Grid>
 )
 
 export default UserHeader
