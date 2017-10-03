@@ -1,7 +1,8 @@
 const express = require('express');
 const app = express();
 const PORT = process.env.PORT || 3000;
-const bodyParser = require('body-parser')
+const bodyParser = require('body-parser');
+const pg = require('pg');
 
 
 app.use(express.static('public'));
