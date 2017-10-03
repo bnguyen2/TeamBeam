@@ -11,7 +11,8 @@
     "bundle": "webpack -w",
     "start": "node server/index.js",
     "schema": "node db/schema.js",
-    "postinstall": "webpack"
+    "postinstall": "webpack",
+    "dev-server": "nodemon server/index.js --open"
   },
   "dependencies": {
     "body-parser": "^1.18.2",
