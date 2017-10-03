@@ -13,8 +13,8 @@ export default class Composer extends React.Component {
     super(props);
 
     this.state = {
-      profile: [],
-      user: [],
+      user: {},
+      profile: {},
       songs: [],
       userposts: []
     };

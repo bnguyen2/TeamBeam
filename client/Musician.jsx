@@ -15,14 +15,16 @@ export default class Musician extends React.Component {
     super(props);
 
     this.state = {
-      profile: profile,
       user: user,
+      profile: profile,
       songs: [],
       albums: [],
       collaboration: ''
     };
 
   }
+
+
 
   render() {
     return (

@@ -3,8 +3,8 @@ module.exports = {
   version: '7.6',
   connection: {
     host : '127.0.0.1',
-    user : 'your_database_user',
-    password : 'your_database_password',
+    user : 'root',
+    password : '',
     database : 'myapp_test'
   }
 };

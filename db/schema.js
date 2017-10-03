@@ -10,7 +10,7 @@ knex.schema.createTableIfNotExists('users', function (table) {
   table.timestamps();
 })
 .then((results) => {
-  console.log('Sucess creating users table');
+  console.log('Success creating users table');
   return knex.schema.createTableIfNotExists('threads', function (table) {
     table.increments();
     table.string('title');
