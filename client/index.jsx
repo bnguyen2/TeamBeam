@@ -1,7 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+// import Composer from '../components/Composer.jsx'
+import Composer from '../client/Composer.jsx'
 
-ReactDOM.render(
-  <h1>Hello, world!</h1>,
-  document.getElementById('app')
-);
+ReactDOM.render(<Composer/>, document.getElementById('app'));
