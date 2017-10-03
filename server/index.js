@@ -37,6 +37,7 @@ app.get('/user/:username', (req, res) => {
 
 app.get('/login', /* Auth Middleware */ (req, res) => {
   // res.send('login')
+
 });
 
 app.get('/logout', (req, res) => {
