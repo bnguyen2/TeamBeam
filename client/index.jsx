@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-// import Composer from '../components/Composer.jsx'
+import Musician from '../client/Musician.jsx'
 import Composer from '../client/Composer.jsx'
 
-ReactDOM.render(<Composer/>, document.getElementById('app'));
+ReactDOM.render(<Musician/>, document.getElementById('app'));
