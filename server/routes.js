@@ -2,7 +2,6 @@ const routes = require('express').Router();
 const models = require('../db/models')
 
 
-
 /* ---------------------------- Handle GET Request ---------------------------- */
 
 routes.get('/', (req, res) => {
