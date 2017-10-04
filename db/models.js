@@ -1,4 +1,4 @@
-const config = require('./config.js') || require('./config.heroku.js'); //Define PostgreSQL configuration here
+const config = process.env.DATABASE_URL ? require('./config.heroku.js') : require('./config.js'); //Define PostgreSQL configuration here
 let knex = require('knex')(config);
 let bookshelf = require('bookshelf')(knex);
 
