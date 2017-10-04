@@ -3,4 +3,4 @@ import ReactDOM from 'react-dom';
 import Musician from '../client/Musician.jsx'
 import Composer from '../client/Composer.jsx'
 
-ReactDOM.render(<Composer/>, document.getElementById('app'));
+ReactDOM.render(<Musician/>, document.getElementById('app'));
