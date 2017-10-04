@@ -18,16 +18,35 @@ export default class Composer extends React.Component {
       songs: [],
       userposts: []
     };
+
+    this.getUserData = this.getUserData.bind(this);
+  }
+
+  getUserData() {
+    axios.get('/user/baonguyen') //
+      .then(response => {
+        this.setState({
+          user: response.data.user,
+          profile: response.data.profile
+        });
+      })
+      .catch(err => {
+        console.log(err)
+      });
+  }
+
+  componentDidMount() {
+    this.getUserData();
   }
 
   render() {
     return (
       <Grid>
         <Row>
-          <Col className="user"> <UserHeader/> </Col>
+          <Col className="user"> <UserHeader user={this.state.user}/> </Col>
         </Row>
         <Row>
-          <Col xs={6} md={6} className="about-me"> <AboutMe/> </Col>
+          <Col xs={6} md={6} className="about-me"> <AboutMe aboutme={this.state.profile}/> </Col>
           <Col xs={6} md={6} className="recent-track"> <Tracks/> </Col>
         </Row>
         <Row>

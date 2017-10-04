@@ -27,7 +27,6 @@ routes.get('/user/:username', (req, res) => {
       res.status(400);
       res.end();
     })
-
 });
 
 routes.get('/login', /* Auth Middleware */ (req, res) => {
