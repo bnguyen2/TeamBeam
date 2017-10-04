@@ -11,6 +11,7 @@
     "bundle": "webpack -w",
     "start": "node server/index.js",
     "schema": "node db/schema.js",
+    "test": "mocha",
     "postinstall": "webpack",
     "dev-server": "nodemon server/index.js --open"
   },
@@ -33,11 +34,15 @@
     "react-dom": "^16.0.0",
     "react-dropzone": "^4.1.3",
     "react-modal": "^2.3.2",
+    "request": "^2.83.0",
+    "request-promise": "^4.2.2",
     "router": "^1.3.2",
     "webpack": "^3.6.0"
   },
   "devDependencies": {
+    "chai": "^4.1.2",
     "eslint-config-hackreactor": "git://github.com/reactorcore/eslint-config-hackreactor",
+    "mocha": "^4.0.0",
     "nodemon": "^1.12.1"
   },
   "babel": {
