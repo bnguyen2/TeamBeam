@@ -1,20 +1,19 @@
 const routes = require('express').Router();
+const db = require('../db/config.js')
 
 /* ---------------------------- Handle GET Request ---------------------------- */
 
 routes.get('/', (req, res) => {
-
-  /*
-    res.send('index')
-    index
-  */
-
+  res.send('index')
 });
 
 routes.get('/user/:username', (req, res) => {
   let user = req.params.username;
   /* query username from db */
 
+  // db.findUser(user, (data) => {
+  //   res.send(data)
+  // })
 
 });
 
@@ -52,4 +51,3 @@ routes.post('/forum/id/comments', /* Auth Middleware */ (req, res) => {
 });
 
 module.exports = routes;
-
