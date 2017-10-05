@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { BrowserRouter, Route, hashHistory } from 'react-router-dom'
+import { BrowserRouter, Route } from 'react-router-dom'
 import Musician from '../client/Musician.jsx'
 import Composer from '../client/Composer.jsx'
 import Login from './Login.jsx'
@@ -12,6 +12,7 @@ ReactDOM.render((
     <Navigation>
       <Route path="/" exact={true} component={Composer} />
       <Route path="/forum" component={Forum} />
+      <Route path="/login" component={Login} />
     </Navigation>
   </BrowserRouter>
 ), document.getElementById('app'));

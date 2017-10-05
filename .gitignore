@@ -33,3 +33,6 @@ bower_components/
 
 # PostgreSQL configuration
 db/config.js
+
+# package-lock.json
+package-lock.json

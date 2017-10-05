@@ -39,7 +39,7 @@ export default class Navigation extends React.Component {
                    <MenuItem eventKey={5.1}>Placeholder</MenuItem>
                    <MenuItem eventKey={5.2}>Settings</MenuItem>
                    <MenuItem divider />
-                   <MenuItem eventKey={5.3}>Log Out</MenuItem>
+                   <MenuItem eventKey={5.3}><Link to="/login">Log Out</Link></MenuItem>
                  </NavDropdown>
                </Nav>
 
