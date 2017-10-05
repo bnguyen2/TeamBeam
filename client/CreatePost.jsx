@@ -36,8 +36,7 @@ class CreatePost extends React.Component {
   setInput(e, input) {
     var state = {};
     state[input] = e.target.value;
-    this.setState(state, ()=> {
-    });
+    this.setState(state);
   }
   addInstrument(instrument) {
     var instruments = this.state.instruments;
@@ -49,7 +48,7 @@ class CreatePost extends React.Component {
     } else {
       instruments.push(instrument);
     } 
-    this.setState({instruments: instruments}, () => console.log(this.state.instruments));
+    this.setState({instruments: instruments});
   }
   onDrop(accepted, rejected){
     this.setState({files: accepted[0].preview}, () => {
