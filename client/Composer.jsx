@@ -7,6 +7,7 @@ import UserPost from './UserPost.jsx'
 import Collaboration from './Collaboration.jsx'
 import { Grid, Row, Col } from 'react-bootstrap'
 import $ from 'jquery';
+const axios = require('axios');
 
 export default class Composer extends React.Component {
  constructor(props) {
@@ -23,7 +24,7 @@ export default class Composer extends React.Component {
   }
 
   getUserData() {
-    axios.get('/user/baonguyen') //
+    axios.get('/user/masaki') // hardcoded endpoint for now
       .then(response => {
         this.setState({
           user: response.data.user,

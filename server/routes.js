@@ -20,8 +20,8 @@ routes.get('/user/:username', (req, res) => {
     })
     .then(profileResults => {
       userData.profile = profileResults
+      res.status(200);
       res.send(userData);
-      res.end()
     }, (err) => {
       console.log('err username does not exist', err);
       res.status(400);

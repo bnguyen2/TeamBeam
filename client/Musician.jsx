@@ -25,7 +25,7 @@ export default class Musician extends React.Component {
   }
 
   getUserData() {
-    axios.get('/user/baonguyen') //
+    axios.get('/user/baonguyen') // hardcoded endpoint for now
       .then(response => {
         this.setState({
           user: response.data.user,
