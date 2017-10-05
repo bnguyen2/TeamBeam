@@ -77,7 +77,19 @@ routes.get('/forum/:threadId/posts', /* Auth Middleware */  (req, res) => {
 routes.post('/login', login.verify);
 
 routes.post('/signup', /* Auth Middleware */ (req, res) => {
+  var newUser = req.body.username;
+  var newPass = req.body.password;
+  //var newEmail = req.body.email; // add email field later
+  var profile = req.body.profile;
+  var newDate = new Date();
 
+  models.User.forge({username: newUser, password: newPass, created_at: newDate, updated_at: newDate}).save()
+  .then((results) => {
+    var id = results.get('id');
+    models.Profile.forge({user_id: id, profiletype: profile}).save().then((data)=>{
+      res.end();
+    }).catch((err)=> { throw err; });
+  }).catch((err)=> { throw err; });
 });
 
 routes.post('/forum', /* Auth Middleware */ (req, res) => {

@@ -1,9 +1,8 @@
 import React, { Component } from "react";
-import { Button, FormGroup, FormControl, ControlLabel } from "react-bootstrap";
+import { Button, FormGroup, FormControl, ControlLabel, ButtonToolbar, Dropdown, MenuItem } from "react-bootstrap";
 import ReactDOM from 'react-dom';
 import ReactModal from 'react-modal';
 import Axios from 'axios';
-//import "./Login.css"; //need to create login css
 
 export default class Login extends Component {
   constructor(props) {
@@ -15,7 +14,8 @@ export default class Login extends Component {
       showModal: false,
       newusername: "",
       newpassword: "",
-      newemail: ""
+      newemail: "",
+      profile: ""
     };
     this.handleChange = this.handleChange.bind(this);
     this.validateForm = this.validateForm.bind(this);
@@ -23,6 +23,8 @@ export default class Login extends Component {
     this.handleCloseModal = this.handleCloseModal.bind(this);
     this.validateNewForm = this.validateNewForm.bind(this);
     this.logIn = this.logIn.bind(this);
+    this.profileSelect = this.profileSelect.bind(this);
+    this.signUp = this.signUp.bind(this);
   }
 
   validateForm() {
@@ -30,7 +32,7 @@ export default class Login extends Component {
   }
 
   validateNewForm() {
-    return this.state.newemail.length > 0 && this.state.newpassword.length > 0;
+    return this.state.newemail.length > 0 && this.state.newpassword.length > 0 && this.state.newusername.length > 0 && this.state.profile.length > 0;
   }
 
   handleChange(event) {
@@ -48,18 +50,39 @@ export default class Login extends Component {
       username: this.state.username,
       password: this.state.password
     };
-
-    
     Axios.post('/login', loginInfo).then((response) => {
       console.log('login successfully');
     }).catch((failed)=>{console.log('failed login')});
   }
 
-  handleOpenModal () {
+  signUp(){
+    const signUpInfo = {
+      username: this.state.newusername,
+      password: this.state.newpassword,
+      email: this.state.newemail,
+      profile: this.state.profile
+    };
+
+    Axios.post('/signup', signUpInfo).then((response) => {
+      // TODO Redirect users to the next page
+      console.log('signup successfully');
+    }).catch((failed)=>{ console.log('failed signup', failed)});
+  }
+
+  profileSelect(evtKey, event) {
+    var selectedProfile = evtKey;
+    var newState = Object.assign({}, this.state);
+    newState.profile = selectedProfile;
+    this.setState(newState, ()=>{console.log(this.state)})
+  }
+
+  handleOpenModal (e) {
+    e.preventDefault();
     this.setState({ showModal: true });
   }
 
-  handleCloseModal () {
+  handleCloseModal (e) {
+    e.preventDefault();
     this.setState({ showModal: false });
   }
 
@@ -102,7 +125,7 @@ export default class Login extends Component {
           <Button
             block
             bsSize="large"
-            type="submit"
+            type="button"
             onClick={this.handleOpenModal}
           >
             Register
@@ -113,7 +136,7 @@ export default class Login extends Component {
            >
 
            <form onSubmit={this.handleSubmit}>
-             <FormGroup controlId="newemail" bsSize="large">
+             <FormGroup controlId="newemail" bsSize="large" >
                <ControlLabel>Email</ControlLabel>
                <FormControl
                  autoFocus
@@ -122,7 +145,7 @@ export default class Login extends Component {
                  onChange={this.handleChange}
                />
              </FormGroup>
-             <FormGroup controlId="newusername" bsSize="large">
+             <FormGroup controlId="newusername" bsSize="large" >
                <ControlLabel>User Name</ControlLabel>
                <FormControl
                  type="newusername"
@@ -130,7 +153,7 @@ export default class Login extends Component {
                  onChange={this.handleChange}
                />
              </FormGroup>
-             <FormGroup controlId="newpassword" bsSize="large">
+             <FormGroup controlId="newpassword" bsSize="large" >
                <ControlLabel>Password</ControlLabel>
                <FormControl
                  type="newpassword"
@@ -138,8 +161,24 @@ export default class Login extends Component {
                  onChange={this.handleChange}
                />
              </FormGroup>
-             <button type='submit' disabled={!this.validateNewForm()} >Submit</button>
-           <button onClick={this.handleCloseModal}>Close Modal</button>
+
+               <ButtonToolbar bsSize="large">
+
+                <Dropdown id="dropDown" className="dropdown" bsSize="large" onSelect={ (evtKey, event)=>{this.profileSelect(evtKey, event)} } >
+                  <Button bsSize="large">
+                    Profile Type
+                  </Button>
+                  <Dropdown.Toggle />
+                  <Dropdown.Menu>
+                    <MenuItem id={1} eventKey={"composer"} value="composer">Composer</MenuItem>
+                    <MenuItem id={2} eventKey={'musician'} value="musician">Musician</MenuItem>
+                  </Dropdown.Menu>
+                </Dropdown>
+              </ButtonToolbar>
+
+              <br/>
+             <button className="btn-group" type='button' disabled={!this.validateNewForm()} onClick={this.signUp} >Submit</button>
+           <button className="btn-group" onClick={this.handleCloseModal}>Close Page</button>
            </form>
          </ReactModal>
         </form>
@@ -147,7 +186,3 @@ export default class Login extends Component {
     );
   }
 }
-//
-// ReactDOM.render(
-//   <Login/>, document.getElementById('app')
-//   );
