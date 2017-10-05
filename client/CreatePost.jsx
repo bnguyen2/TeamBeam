@@ -1,39 +1,58 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-
-//Todo: send post {} to app.jsx
+import Dropzone from 'react-dropzone'
+import axios from 'axios';
 
 class CreatePost extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       title: '',
-      message: '',
-      instruments: '',
+      description: '',
+      instruments: [],
+      customInstrument: '',
+      musicsheet: '',
       sendable: {}
     };
   }
   constructPost(e) {
-    //ajax request with sendable data;
-    //name should be the profile name inherited from this.props
     e.preventDefault();
     var sendable = {
-      name: '',
       title: this.state.title,
       instruments: this.state.instruments,
-      message: this.state.message
+      description: this.state.message,
+      musicsheet: this.state.musicsheet
     }
     this.setState({sendable: sendable}, ()=> {
-      console.log('SENDABLE:', this.state.sendable)
-      //send 
+      axios.post('/forum', {data: this.state.sendable})
+        .then(res => {
+          console.log(res);
+        })
+        .catch(err => {
+          console.log(err);
+        });
     })
   }
   setInput(e, input) {
     var state = {};
     state[input] = e.target.value;
+    this.setState(state);
+  }
+  addInstrument(instrument) {
+    var instruments = this.state.instruments;
+    instrument ? instrument = instrument : instrument = this.state.customInstrument;
+    var indexToRemove = instruments.indexOf(instrument);
 
-    this.setState(state, ()=> {
-      console.log(this.state.title);
+    if (indexToRemove >= 0) {
+      instruments.splice(indexToRemove, 1);
+    } else {
+      instruments.push(instrument);
+    } 
+    this.setState({instruments: instruments});
+  }
+  onDrop(accepted, rejected){
+    this.setState({files: accepted[0].preview}, () => {
+      console.log('accepted: ', this.state.file);
     });
   }
 
@@ -43,9 +62,27 @@ class CreatePost extends React.Component {
         
         <input placeholder='title' rows='3' onKeyUp={(e)=> this.setInput(e, 'title')}/>
         <br/>
-        <input placeholder='instruments' onKeyUp={(e)=> this.setInput(e, 'instruments')}/>
+        <div>
+          instruments added ->
+            <div>
+            {this.state.instruments.map((instrument, key) => <span key={key}> {instrument + ', '} </span>)}
+            </div>
+          <br/>
+          <input type='checkbox' onClick={()=> this.addInstrument('guitar')}/> 
+          guitar
+          <input type='checkbox' onClick={()=> this.addInstrument('drums')}/> 
+          drums
+          <br/>
+          <input placeholder='custom instrument...' onKeyUp={(e)=> this.setInput(e, 'customInstrument')}/>
+          <button onClick={()=> this.addInstrument()}>
+          add/remove custom
+          </button>
+        </div>
+          
         <br/>
-        <textarea placeholder='your message...' onKeyUp={(e)=>this.setInput(e, 'message')}></textarea>
+        <textarea placeholder='your message...' onKeyUp={(e)=>this.setInput(e, 'description')}></textarea>
+        <Dropzone onDrop={this.onDrop.bind(this)}> Click to add musicsheet
+        </Dropzone>
         <button onClick={this.constructPost.bind(this)}>
          Post message
         </button>
