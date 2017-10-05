@@ -16,6 +16,7 @@
     "dev-server": "nodemon server/index.js --open"
   },
   "dependencies": {
+    "axios": "^0.16.2",
     "babel-cli": "^6.7.5",
     "babel-core": "^6.26.0",
     "babel-loader": "^7.1.2",
@@ -24,9 +25,13 @@
     "babel-register": "^6.7.2",
     "body-parser": "^1.18.2",
     "bookshelf": "^0.10.4",
+    "cookie-parser": "^1.4.3",
     "express": "^4.16.1",
+    "express-session": "^1.15.6",
     "jquery": "^3.2.1",
     "knex": "^0.13.0",
+    "passport": "^0.4.0",
+    "passport-local": "^1.0.0",
     "pg": "^7.3.0",
     "pg-promise": "^6.10.2",
     "react": "^16.0.0",

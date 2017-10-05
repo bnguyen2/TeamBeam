@@ -1,5 +1,6 @@
 const routes = require('express').Router();
-const models = require('../db/models')
+const models = require('../db/models');
+const login = require('./login');
 
 /* ---------------------------- Handle GET Request ---------------------------- */
 
@@ -25,7 +26,10 @@ routes.get('/login', /* Auth Middleware */ (req, res) => {
 });
 
 routes.get('/logout', (req, res) => {
-	// res.send('logout')
+  // passport attaches a logout method to every req object
+  console.log('logging out');
+  req.logout();
+  res.redirect('/');
 });
 
 routes.get('/forum', /* Auth Middleware */  (req, res) => {
@@ -45,10 +49,7 @@ routes.get('/forum', /* Auth Middleware */  (req, res) => {
 
 /* ---------------------------- Handle POST Request ---------------------------- */
 
-routes.post('/login', /* Auth Middleware */ (req, res) => {
-
-
-});
+routes.post('/login', login.verify);
 
 routes.post('/signup', /* Auth Middleware */ (req, res) => {
 

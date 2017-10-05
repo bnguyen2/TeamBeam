@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { Button, FormGroup, FormControl, ControlLabel } from "react-bootstrap";
 import ReactDOM from 'react-dom';
 import ReactModal from 'react-modal';
+import Axios from 'axios';
 //import "./Login.css"; //need to create login css
 
 export default class Login extends Component {
@@ -9,7 +10,7 @@ export default class Login extends Component {
     super(props);
 
     this.state = {
-      email: "",
+      username: "",
       password: "",
       showModal: false,
       newusername: "",
@@ -21,10 +22,11 @@ export default class Login extends Component {
     this.handleOpenModal = this.handleOpenModal.bind(this);
     this.handleCloseModal = this.handleCloseModal.bind(this);
     this.validateNewForm = this.validateNewForm.bind(this);
+    this.logIn = this.logIn.bind(this);
   }
 
   validateForm() {
-    return this.state.email.length > 0 && this.state.password.length > 0;
+    return this.state.username.length > 0 && this.state.password.length > 0;
   }
 
   validateNewForm() {
@@ -41,8 +43,16 @@ export default class Login extends Component {
     event.preventDefault();
   }
 
-  createNewUser(){
-    //import modal library and utilize popup
+  logIn(){
+    const loginInfo = {
+      username: this.state.username,
+      password: this.state.password
+    };
+
+    
+    Axios.post('/login', loginInfo).then((response) => {
+      console.log('login successfully');
+    }).catch((failed)=>{console.log('failed login')});
   }
 
   handleOpenModal () {
@@ -62,12 +72,12 @@ export default class Login extends Component {
           </div>
         </div>
         <hr/>
-        <form onSubmit={this.handleSubmit}>
-          <FormGroup controlId="email" bsSize="large">
-            <ControlLabel>Email</ControlLabel>
+        <form>
+          <FormGroup controlId="username" bsSize="large">
+            <ControlLabel>Username</ControlLabel>
             <FormControl
               autoFocus
-              type="email"
+              type="username"
               value={this.state.email}
               onChange={this.handleChange}
             />
@@ -81,10 +91,11 @@ export default class Login extends Component {
             />
           </FormGroup>
           <Button
+            onClick={this.logIn}
             block
             bsSize="large"
             disabled={!this.validateForm()}
-            type="submit"
+            type="button"
           >
             Login
           </Button>
