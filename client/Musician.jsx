@@ -7,30 +7,45 @@ import Albums from './Albums.jsx'
 import Collaboration from './Collaboration.jsx'
 import { Grid, Row, Col } from 'react-bootstrap'
 import $ from 'jquery';
-const user = require('../data/user_data.js');
-const profile = require('../data/profile_data.js');
+const axios = require('axios');
 
 export default class Musician extends React.Component {
  constructor(props) {
     super(props);
 
     this.state = {
-      user: user,
-      profile: profile,
+      user: {},
+      profile: {},
       songs: [],
       albums: [],
-      collaboration: ''
+      collaboration: []
     };
 
+    this.getUserData = this.getUserData.bind(this);
   }
 
+  getUserData() {
+    axios.get('/user/baonguyen') // hardcoded endpoint for now
+      .then(response => {
+        this.setState({
+          user: response.data.user,
+          profile: response.data.profile
+        });
+      })
+      .catch(err => {
+        console.log(err)
+      });
+  }
 
+  componentDidMount() {
+    this.getUserData();
+  }
 
   render() {
     return (
       <Grid>
         <Row >
-          <Col className="user"> <UserHeader/> </Col>
+          <Col className="user"> <UserHeader user={this.state.user}/> </Col>
         </Row>
         <Row>
           <Col xs={6} md={6} className="about-me"> <AboutMe aboutme={this.state.profile}/> </Col>
