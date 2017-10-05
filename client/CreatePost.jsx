@@ -24,7 +24,7 @@ class CreatePost extends React.Component {
       musicsheet: this.state.musicsheet
     }
     this.setState({sendable: sendable}, ()=> {
-      axios.post('/forum', {data: this.state.sendable})
+      axios.post('/forum', {this.state.sendable})
         .then(res => {
           console.log(res);
         })
@@ -47,7 +47,7 @@ class CreatePost extends React.Component {
       instruments.splice(indexToRemove, 1);
     } else {
       instruments.push(instrument);
-    } 
+    }
     this.setState({instruments: instruments});
   }
   onDrop(accepted, rejected){
@@ -58,8 +58,8 @@ class CreatePost extends React.Component {
 
   render() {
     return (
-      <div> 
-        
+      <div>
+
         <input placeholder='title' rows='3' onKeyUp={(e)=> this.setInput(e, 'title')}/>
         <br/>
         <div>
@@ -68,9 +68,9 @@ class CreatePost extends React.Component {
             {this.state.instruments.map((instrument, key) => <span key={key}> {instrument + ', '} </span>)}
             </div>
           <br/>
-          <input type='checkbox' onClick={()=> this.addInstrument('guitar')}/> 
+          <input type='checkbox' onClick={()=> this.addInstrument('guitar')}/>
           guitar
-          <input type='checkbox' onClick={()=> this.addInstrument('drums')}/> 
+          <input type='checkbox' onClick={()=> this.addInstrument('drums')}/>
           drums
           <br/>
           <input placeholder='custom instrument...' onKeyUp={(e)=> this.setInput(e, 'customInstrument')}/>
@@ -78,7 +78,7 @@ class CreatePost extends React.Component {
           add/remove custom
           </button>
         </div>
-          
+
         <br/>
         <textarea placeholder='your message...' onKeyUp={(e)=>this.setInput(e, 'description')}></textarea>
         <Dropzone onDrop={this.onDrop.bind(this)}> Click to add musicsheet

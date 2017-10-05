@@ -82,7 +82,7 @@ routes.post('/signup', /* Auth Middleware */ (req, res) => {
 
 routes.post('/forum', /* Auth Middleware */ (req, res) => {
   console.log(req.body.data)
-  models.Thread.forge(req.body.data).save()
+  models.Thread.forge(req.body).save()
   .then((results) => {
     res.status(200);
     res.end();
