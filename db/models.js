@@ -15,7 +15,16 @@ module.exports.Profile = bookshelf.Model.extend({
 });
 
 module.exports.User = bookshelf.Model.extend({
-  tableName: 'users'
+  // return password from database instead of boolean
+  tableName: 'users',
+  hasTimestamps: true,
+  verifyPassword: function(password) {
+      return this.get('password') === password;
+  }
+}, {
+  byUsername: function(username) {
+      return this.forge().query({where:{ username: username }}).fetch();
+  }
 });
 
 module.exports.Album = bookshelf.Model.extend({
