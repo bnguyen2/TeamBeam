@@ -1,15 +1,28 @@
 import React from 'react';
 import Thread from './Thread.jsx';
 import $ from "jquery";
+const axios = require('axios');
 const threads_data = require('../data/threads_data.js');//Dummy threads data
 
 export default class Forum extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      threads: threads_data,
+      threads: [],
       searchText: ''
     }
+  }
+
+  componentDidMount() {
+    axios.get('/forum')
+    .then((results) => {
+      let newState = Object.assign({}, this.state);
+      newState.threads = results.data;
+      console.log(newState.threads);
+      this.setState(newState);
+    }, (err) => {
+      console.log('Error loading threads', err);
+    })
   }
 
   render() {
