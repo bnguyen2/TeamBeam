@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Nav, Navbar, NavItem, NavDropdown,  MenuItem} from 'react-bootstrap'
+import { Link } from 'react-router-dom'
 
 export default class Navigation extends React.Component {
  constructor(props) {
@@ -15,33 +16,37 @@ export default class Navigation extends React.Component {
 
   render() {
     return (
-      <Navbar collapseOnSelect fluid>
-             <Navbar.Header>
-               <Navbar.Brand>
-                 <a href="#">SoundConnect</a>
-               </Navbar.Brand>
-             <Navbar.Toggle/>
-             </Navbar.Header>
+      <div>
+        <Navbar collapseOnSelect fluid>
+               <Navbar.Header>
+                 <Navbar.Brand>
+                   <Link to="/">Sound Connect</Link>
+                 </Navbar.Brand>
+               <Navbar.Toggle/>
+               </Navbar.Header>
 
-            <Navbar.Collapse>
-             <Nav>
-               <NavItem eventKey={1} href="#">Home</NavItem>
-               <NavItem eventKey={2} href="#">Forum</NavItem>
-               <NavItem eventKey={3} href="#">Placeholder</NavItem>
-               <NavItem eventKey={4} href="#">Placeholder</NavItem>
-             </Nav>
+              <Navbar.Collapse>
+               <Nav>
+                 <NavItem eventKey={1} href="#"><Link to="/">Home</Link></NavItem>
+                 <NavItem eventKey={2} href="#"><Link to="/forum">Forum</Link></NavItem>
 
-             <Nav pullRight>
-               <NavDropdown eventKey={5} title="Account" id="basic-nav-dropdown">
-                 <MenuItem eventKey={5.1}>Placeholder</MenuItem>
-                 <MenuItem eventKey={5.2}>Settings</MenuItem>
-                 <MenuItem divider />
-                 <MenuItem eventKey={5.3}>Log Out</MenuItem>
-               </NavDropdown>
-             </Nav>
+                 <NavItem eventKey={3} href="#">Placeholder</NavItem>
+                 <NavItem eventKey={4} href="#">Placeholder</NavItem>
+               </Nav>
 
-           </Navbar.Collapse>
-     </Navbar>
+               <Nav pullRight>
+                 <NavDropdown eventKey={5} title="Account" id="basic-nav-dropdown">
+                   <MenuItem eventKey={5.1}>Placeholder</MenuItem>
+                   <MenuItem eventKey={5.2}>Settings</MenuItem>
+                   <MenuItem divider />
+                   <MenuItem eventKey={5.3}><Link to="/login">Log Out</Link></MenuItem>
+                 </NavDropdown>
+               </Nav>
+
+             </Navbar.Collapse>
+       </Navbar>
+       {this.props.children}
+     </div>
     );
   }
 }
