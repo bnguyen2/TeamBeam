@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter, Route } from 'react-router-dom'
 import Musician from '../client/Musician.jsx'
+<<<<<<< HEAD
 import Composer from '../client/Composer.jsx'
 import Login from './Login.jsx'
 import Forum from './Forum.jsx'
@@ -16,3 +17,8 @@ ReactDOM.render((
     </Navigation>
   </BrowserRouter>
 ), document.getElementById('app'));
+=======
+import Login from '../client/Login.jsx'
+
+ReactDOM.render(<Login/>, document.getElementById('app'));
+>>>>>>> 'working on login'

@@ -49,13 +49,14 @@ export default class Login extends Component {
       password: this.state.password
     };
 
-    
+
     Axios.post('/login', loginInfo).then((response) => {
       console.log('login successfully');
     }).catch((failed)=>{console.log('failed login')});
   }
 
-  handleOpenModal () {
+  handleOpenModal (event) {
+    event.preventDefault();
     this.setState({ showModal: true });
   }
 
@@ -102,7 +103,7 @@ export default class Login extends Component {
           <Button
             block
             bsSize="large"
-            type="submit"
+            type="button"
             onClick={this.handleOpenModal}
           >
             Register
