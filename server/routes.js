@@ -43,7 +43,6 @@ routes.get('/logout', (req, res) => {
 });
 
 routes.get('/forum', /* Auth Middleware */  (req, res) => {
-  console.log('here');
   models.Thread.fetchAll()
   .then((results) => {
     let threads = results.models.map((modelBase) => {
@@ -51,6 +50,21 @@ routes.get('/forum', /* Auth Middleware */  (req, res) => {
     });
     res.status(200);
     res.send(threads);
+  }, (err) => {
+    console.log('err fetching threads', err);
+    res.status(400);
+    res.end();
+  });
+});
+
+routes.get('/forum/:threadId/posts', /* Auth Middleware */  (req, res) => {
+  models.Post.query('where', 'thread_id', '=', +req.param('threadId')).fetchAll()
+  .then((results) => {
+    let posts = results.models.map((modelBase) => {
+      return modelBase.attributes;
+    });
+    res.status(200);
+    res.send(posts);
   }, (err) => {
     console.log('err fetching threads', err);
     res.status(400);

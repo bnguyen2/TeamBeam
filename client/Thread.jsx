@@ -6,7 +6,8 @@ export default class Thread extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      popupIsOpen: false
+      popupIsOpen: false,
+      posts: []
     }
     this.openPopup = this.openPopup.bind(this);
     this.closePopup = this.closePopup.bind(this);
@@ -21,6 +22,15 @@ export default class Thread extends React.Component {
     let newState = Object.assign({}, this.state);
     newState.popupIsOpen = true;
     this.setState(newState);
+  }
+
+  componentDidMount() {
+    let newState = Object.assign({}, this.state);
+    axios.get(`/forum/${this.props.threadData.id}/posts`)
+    .then((results) => {
+      newState.posts = results.data;
+      this.setState(newState);
+    });
   }
 
 
@@ -57,8 +67,13 @@ export default class Thread extends React.Component {
           <img src={this.props.threadData.musicSheet}></img>
           <button onClick={this.closePopup}>Close</button>
           <div className="posts">
-            <p>Dummy post 1</p>
-            <p>Dummy post 2</p>
+            {this.state.posts.map((post) => {
+              return (
+                <div>
+                  <p>{post.message}</p>
+                </div>
+              )
+            })}
             <form onSubmit={(e) => this.handleReply(e)}>
               <textarea name="reply-text"></textarea>
               <input type="submit" value="Reply"></input>
