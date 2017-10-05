@@ -1,5 +1,7 @@
 import React from 'react';
 import Modal from 'react-modal';
+const RB = require('react-bootstrap');
+
 const axios = require('axios');
 
 export default class Thread extends React.Component {
@@ -69,13 +71,45 @@ export default class Thread extends React.Component {
           onRequestClose={this.closePopup}
           contentLabel="ThreadPopup"
         >
-          <h3>{this.props.threadData.title}</h3>
+          <RB.Row>
+            <RB.Col xs={1} xsOffset={11}>
+              <RB.Button onClick={this.closePopup} bsSize="small">X</RB.Button>
+            </RB.Col>
+            <RB.Col xs={10}>
+              <RB.PageHeader>{this.props.threadData.title}</RB.PageHeader>
+            </RB.Col>
+          </RB.Row>
           <p>{this.props.threadData.description}</p>
-          <ul>
-            {JSON.parse(this.props.threadData.instruments).map((instrument) => {
-              return <li>{instrument}</li>
-            })}
-          </ul>
+          <RB.Row>
+            <RB.Col xs={4}>
+              <RB.Table bordered responsive>
+                <thead>
+                  <tr><th>Instruments</th></tr>
+                </thead>
+                <tbody>
+                  {JSON.parse(this.props.threadData.instruments).map((instrument) => {
+                    return <tr><th>{instrument}</th></tr>
+                  })}
+                </tbody>
+              </RB.Table>
+            </RB.Col>
+          </RB.Row>
+          <RB.Row>
+            <RB.Col>
+              <RB.ListGroup>
+                {this.state.posts.map((post) => {
+                  return (
+                    <RB.ListGroupItem>
+                      <span>User id: {post.user_id}</span> <span>{post.created_at}</span>
+                      <p>{post.message}</p>
+                    </RB.ListGroupItem>
+                  )
+                })}
+              </RB.ListGroup>
+            </RB.Col>
+          </RB.Row>
+
+
           <img src={this.props.threadData.musicSheet}></img>
           <button onClick={this.closePopup}>Close</button>
           <div className="posts">
