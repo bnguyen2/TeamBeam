@@ -43,6 +43,7 @@ routes.get('/logout', (req, res) => {
 });
 
 routes.get('/forum', /* Auth Middleware */  (req, res) => {
+  console.log('here');
   models.Thread.fetchAll()
   .then((results) => {
     let threads = results.models.map((modelBase) => {
@@ -78,8 +79,17 @@ routes.post('/forum', /* Auth Middleware */ (req, res) => {
   });
 });
 
-routes.post('/forum/id/comments', /* Auth Middleware */ (req, res) => {
-
+routes.post('/forum/:threadId/posts', /* Auth Middleware */ (req, res) => {
+  //This functino assumes that the request data has user_id property
+  req.body.thread_id = +req.param('threadId');
+  models.Post.forge(req.body).save()
+  .then((results) => {
+    res.status(200);
+    res.end();
+  }, (err) => {
+    res.status(400);
+    res.end();
+  });
 });
 
 module.exports = routes;
