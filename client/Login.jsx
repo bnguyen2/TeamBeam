@@ -55,12 +55,13 @@ export default class Login extends Component {
     }).catch((failed)=>{console.log('failed login')});
   }
 
-  handleOpenModal (event) {
-    event.preventDefault();
+  handleOpenModal (e) {
+    e.preventDefault();
     this.setState({ showModal: true });
   }
 
-  handleCloseModal () {
+  handleCloseModal (e) {
+    e.preventDefault();
     this.setState({ showModal: false });
   }
 
@@ -139,8 +140,16 @@ export default class Login extends Component {
                  onChange={this.handleChange}
                />
              </FormGroup>
-             <button type='submit' disabled={!this.validateNewForm()} >Submit</button>
-           <button onClick={this.handleCloseModal}>Close Modal</button>
+             <FormGroup controlId="profile" bsSize="large">
+               <ControlLabel>Profile Type</ControlLabel>
+               <FormControl
+                 type="profiletype"
+
+
+               />
+             </FormGroup>
+             <button type='button' disabled={!this.validateNewForm()} >Submit</button>
+           <button onClick={this.handleCloseModal}>Close Page</button>
            </form>
          </ReactModal>
         </form>
