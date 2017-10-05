@@ -24,7 +24,7 @@ class CreatePost extends React.Component {
       musicsheet: this.state.musicsheet
     }
     this.setState({sendable: sendable}, ()=> {
-      axios.post('/forum', {this.state.sendable})
+      axios.post('/forum', {data: this.state.sendable})
         .then(res => {
           console.log(res);
         })
@@ -51,44 +51,72 @@ class CreatePost extends React.Component {
     this.setState({instruments: instruments});
   }
   onDrop(accepted, rejected){
-    this.setState({files: accepted[0].preview}, () => {
-      console.log('accepted: ', this.state.file);
+    console.log(accepted[0].preview)
+    this.setState({musicsheet: accepted[0].preview}, () => {
+      console.log('accepted: ', this.state.musicsheet);
     });
   }
 
   render() {
     return (
       <div>
-
+        POST to thread:
+        <br/>
+        <button style={exit} onClick={()=> this.props.closePopup()}>
+          X
+        </button>
+        <br/>
         <input placeholder='title' rows='3' onKeyUp={(e)=> this.setInput(e, 'title')}/>
         <br/>
+        <textarea placeholder='your message...' onKeyUp={(e)=>this.setInput(e, 'description')}>
+        </textarea>
+        <br/>
         <div>
+          Add Instruments...
+          <br/>
+          <input type='checkbox' onClick={()=> this.addInstrument('guitar')}/>
+            guitar
+          <input type='checkbox' onClick={()=> this.addInstrument('drums')}/>
+            drums
+          <br/>
+
           instruments added ->
             <div>
             {this.state.instruments.map((instrument, key) => <span key={key}> {instrument + ', '} </span>)}
             </div>
           <br/>
-          <input type='checkbox' onClick={()=> this.addInstrument('guitar')}/>
-          guitar
-          <input type='checkbox' onClick={()=> this.addInstrument('drums')}/>
-          drums
-          <br/>
+         
           <input placeholder='custom instrument...' onKeyUp={(e)=> this.setInput(e, 'customInstrument')}/>
           <button onClick={()=> this.addInstrument()}>
-          add/remove custom
+          add/remove
           </button>
         </div>
 
         <br/>
-        <textarea placeholder='your message...' onKeyUp={(e)=>this.setInput(e, 'description')}></textarea>
-        <Dropzone onDrop={this.onDrop.bind(this)}> Click to add musicsheet
+
+        <Dropzone onDrop={this.onDrop.bind(this)}> Click to upload musicsheet
         </Dropzone>
+        <div style={exit}>
+          uploaded Sheet ->
+          <img style={musicSheet} src={`${this.state.musicsheet}`}/>
+        </div>
+        <br/>
         <button onClick={this.constructPost.bind(this)}>
          Post message
         </button>
+       
 
       </div>
     )
   }
 }
+const musicSheet = {
+  width: 100,
+  height: 100,
+  mode: 'fit'
+}
+const exit = {
+  float: 'right'
+}
+
 export default CreatePost;
