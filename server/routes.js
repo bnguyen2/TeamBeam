@@ -72,6 +72,19 @@ routes.get('/forum/:threadId/posts', /* Auth Middleware */  (req, res) => {
   });
 });
 
+// route to individual post
+routes.get('/forum/:threadId/posts/:postId', /* Auth Middleware */  (req, res) => {
+  models.Post.query('where', 'id', '=', req.params.postId).fetch()
+  .then((results) => {
+    res.status(200);
+    res.send(results);
+  }, (err) => {
+    console.log('err fetching threads', err);
+    res.status(400);
+    res.end();
+  });
+});
+
 /* ---------------------------- Handle POST Request ---------------------------- */
 
 routes.post('/login', login.verify);
@@ -118,4 +131,36 @@ routes.post('/forum/:threadId/posts', /* Auth Middleware */ (req, res) => {
   });
 });
 
+/* ---------------------------- Handle DELETE/UPDATE Request ---------------------------- */
+
+routes.delete('/forum/:threadId/posts/:postId', /* Auth Middleware */ (req, res) => {
+  models.Post.query('where', 'thread_id', '=', req.params.threadId).fetchAll()
+    .then(postResults => {
+      return postResults.models.map((modelBase) => { // return a promise, array of posts
+        return modelBase.attributes;
+      })
+    })
+    .then(results => {
+      // delete the post from results array
+      results.forEach((post, index) => {
+        if (post.id === req.params.postId) {
+          results.splice(index, 1)
+        }
+      });
+      // delete the post from database
+      models.Post.query('where', 'id', '=', req.params.postId).fetch()
+        .then(post => {
+          if (post) {
+            post.destroy()
+          }
+        });
+      res.status(200)
+      res.send(results)
+    }, (err) => {
+      res.status(400);
+      res.end();
+    })
+});
+
 module.exports = routes;
+
