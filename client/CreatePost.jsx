@@ -90,9 +90,8 @@ class CreatePost extends React.Component {
             <ControlLabel>
               message
             </ControlLabel>
-            <br/>
-            <textarea placeholder='your message...' onKeyUp={(e)=>this.setInput(e, 'description')}>
-            </textarea>
+            <FormControl type='text' placeholder='your message...' onKeyUp={(e)=>this.setInput(e, 'description')}>
+            </FormControl>
         </FormGroup>
        
         <Well>
