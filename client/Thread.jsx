@@ -1,5 +1,7 @@
 import React from 'react';
 import Modal from 'react-modal';
+const RB = require('react-bootstrap');
+
 const axios = require('axios');
 
 export default class Thread extends React.Component {
@@ -37,7 +39,6 @@ export default class Thread extends React.Component {
 
   handleReply(e) {
     e.preventDefault();
-    console.log('replied!!');
     axios.post(`/forum/${this.props.threadData.id}/posts`, {
       message: e.target['reply-text'].value,
       user_id: 1  //Change the hard-coded user id later when authentication is implemented
@@ -69,28 +70,56 @@ export default class Thread extends React.Component {
           onRequestClose={this.closePopup}
           contentLabel="ThreadPopup"
         >
-          <h3>{this.props.threadData.title}</h3>
-          <p>{this.props.threadData.description}</p>
-          <ul>
-            {JSON.parse(this.props.threadData.instruments).map((instrument) => {
-              return <li>{instrument}</li>
-            })}
-          </ul>
-          <img src={this.props.threadData.musicSheet}></img>
-          <button onClick={this.closePopup}>Close</button>
-          <div className="posts">
-            {this.state.posts.map((post, index) => {
-              return (
-                <div>
-                  <p onClick={(e) => this.deletePosts(index)}>{post.message}</p>
-                </div>
-              )
-            })}
-            <form onSubmit={(e) => this.handleReply(e)}>
-              <textarea name="reply-text"></textarea>
-              <input type="submit" value="Reply"></input>
-            </form>
-          </div>
+          <RB.Row>
+              <RB.PageHeader>{this.props.threadData.title}</RB.PageHeader>
+              <RB.Col xs={1} xsOffset={11}>
+                <RB.Button onClick={this.closePopup} bsSize="small" className="thread-exit">
+                  <RB.Glyphicon glyph="remove" />
+                </RB.Button>
+              </RB.Col>
+          </RB.Row>
+          <RB.Row>
+            <p>{this.props.threadData.description}</p>
+          </RB.Row>
+          <RB.Row>
+            <RB.Image src={this.props.threadData.musicsheet} responsive />
+          </RB.Row>
+          <RB.Row>
+            <h4>Instruments</h4>
+            <ul type="disc">
+              {JSON.parse(this.props.threadData.instruments).map((instrument) => {
+                return <li>{instrument}</li>
+              })}
+            </ul>
+          </RB.Row>
+          <RB.Row>
+            <RB.ListGroup className="posts">
+              {this.state.posts.map((post, index) => {
+                return (
+                  <RB.ListGroupItem>
+                    <RB.Row>
+                      User id: {post.user_id} {post.created_at}
+                      <RB.Col xs={1} xsOffset={11}>
+                        <RB.Button onClick={(e) => this.deletePosts(index)} bsSize="xsmall">
+                          <RB.Glyphicon glyph="remove" />
+                        </RB.Button>
+                      </RB.Col>
+                    </RB.Row>
+                    <RB.Row>
+                      {post.message}
+                    </RB.Row>
+                  </RB.ListGroupItem>
+                )
+              })}
+            </RB.ListGroup>
+          </RB.Row>
+
+          <form onSubmit={(e) => this.handleReply(e)}>
+            <RB.FormGroup>
+              <RB.FormControl componentClass="textarea" name="reply-text"/>
+            </RB.FormGroup>
+            <RB.Button type="submit">Reply</RB.Button>
+          </form>
         </Modal>
       </div>
     );

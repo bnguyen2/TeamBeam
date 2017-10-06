@@ -6,3 +6,13 @@
   margin: 0 auto;
   max-width: 320px;
 }
+
+.thread-exit {
+  position: relative;
+  top: -9em;
+}
+
+
+textarea {
+  resize: none;
+}
