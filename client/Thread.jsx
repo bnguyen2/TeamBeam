@@ -39,8 +39,6 @@ export default class Thread extends React.Component {
 
   handleReply(e) {
     e.preventDefault();
-    console.log('replied!!');
-    console.log(e.target['reply-text'].value);
     axios.post(`/forum/${this.props.threadData.id}/posts`, {
       message: e.target['reply-text'].value,
       user_id: 1  //Change the hard-coded user id later when authentication is implemented
