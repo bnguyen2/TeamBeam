@@ -106,7 +106,7 @@ routes.post('/signup', /* Auth Middleware */ (req, res) => {
 });
 
 routes.post('/forum', /* Auth Middleware */ (req, res) => {
-  console.log(req.body.data)
+  console.log(req.body)
   models.Thread.forge(req.body).save()
   .then((results) => {
     res.status(200);

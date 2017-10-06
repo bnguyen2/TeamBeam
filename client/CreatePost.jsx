@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import Dropzone from 'react-dropzone'
 import axios from 'axios';
+import { Button, FormControl, ControlLabel, FormGroup, Checkbox, Radio, Input, Well } from 'react-bootstrap';
 
 class CreatePost extends React.Component {
   constructor(props) {
@@ -12,7 +13,8 @@ class CreatePost extends React.Component {
       instruments: [],
       customInstrument: '',
       musicsheet: '',
-      sendable: {}
+      sendable: {},
+      availableInstruments: ['guitar', 'drums']
     };
   }
   constructPost(e) {
@@ -24,7 +26,8 @@ class CreatePost extends React.Component {
       musicsheet: this.state.musicsheet
     }
     this.setState({sendable: sendable}, ()=> {
-      axios.post('/forum', {data: this.state.sendable})
+      var data = this.state.sendable;
+      axios.post('/forum', data)
         .then(res => {
           console.log(res);
         })
@@ -58,55 +61,89 @@ class CreatePost extends React.Component {
   }
 
   render() {
+    
+
     return (
-      <div>
-        POST to thread:
-        <br/>
-        <button style={exit} onClick={()=> this.props.closePopup()}>
+      <form>
+        <Button bsStyle='default' style={exit} onClick={()=> this.props.closePopup()}>
           X
-        </button>
+        </Button>
         <br/>
-        <input placeholder='title' rows='3' onKeyUp={(e)=> this.setInput(e, 'title')}/>
+        <ControlLabel>
+          POST to thread:
+        </ControlLabel>
+        
         <br/>
-        <textarea placeholder='your message...' onKeyUp={(e)=>this.setInput(e, 'description')}>
-        </textarea>
-        <br/>
-        <div>
-          Add Instruments...
-          <br/>
-          <input type='checkbox' onClick={()=> this.addInstrument('guitar')}/>
-            guitar
-          <input type='checkbox' onClick={()=> this.addInstrument('drums')}/>
-            drums
-          <br/>
+        <FormGroup>
+          <ControlLabel>
+            title
+          </ControlLabel>
+          <FormControl type="text" placeholder="title" onKeyUp={(e)=> this.setInput(e, 'title')}> 
 
-          instruments added ->
-            <div>
-            {this.state.instruments.map((instrument, key) => <span key={key}> {instrument + ', '} </span>)}
-            </div>
-          <br/>
-         
+          </FormControl>
+            <ControlLabel>
+              message
+            </ControlLabel>
+            <br/>
+            <textarea placeholder='your message...' onKeyUp={(e)=>this.setInput(e, 'description')}>
+            </textarea>
+        </FormGroup>
+       
+        <Well>
+          <FormGroup>
+            <ControlLabel>
+              Check Box to add instrument(s)
+            </ControlLabel>
+            <br/>
+              {
+                this.state.availableInstruments.map((instrument) => 
+                  <Checkbox inline onClick={()=> this.addInstrument(instrument)}>
+                    {instrument}
+                  </Checkbox>
+                )
+              }
+
+  
+            <br/>
+            <ControlLabel>
+              instruments added:
+            </ControlLabel>
+              {'  '}
+              <br/>
+               <ControlLabel>
+                {this.state.instruments.map((instrument, key) => <Radio readOnly inline checked> {  instrument + ' '} </Radio>)}
+              </ControlLabel>
+  
+          </FormGroup>
+
           <input placeholder='custom instrument...' onKeyUp={(e)=> this.setInput(e, 'customInstrument')}/>
-          <button onClick={()=> this.addInstrument()}>
+          <Button bsSize='xsmall' bsStyle='primary' onClick={()=> this.addInstrument() }>
           add/remove
-          </button>
-        </div>
+          </Button>
+
+        </Well>
+         
+
+          <Dropzone onDrop={this.onDrop.bind(this)}> Click to upload musicsheet
+          </Dropzone>
+    
+          
+
+          <div style={exit}>
+            <ControlLabel>
+              uploaded Sheet
+            </ControlLabel>
+            {' '}
+            <img style={musicSheet} src={`${this.state.musicsheet}`}/>
+          </div>
 
         <br/>
-
-        <Dropzone onDrop={this.onDrop.bind(this)}> Click to upload musicsheet
-        </Dropzone>
-        <div style={exit}>
-          uploaded Sheet ->
-          <img style={musicSheet} src={`${this.state.musicsheet}`}/>
-        </div>
-        <br/>
-        <button onClick={this.constructPost.bind(this)}>
-         Post message
-        </button>
+        <Button bsSize='large' bsStyle='success' onClick={this.constructPost.bind(this)}>
+         Post to thread
+        </Button>
        
 
-      </div>
+      </form>
     )
   }
 }
@@ -118,5 +155,6 @@ const musicSheet = {
 const exit = {
   float: 'right'
 }
+
 
 export default CreatePost;
