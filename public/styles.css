@@ -7,6 +7,19 @@
   max-width: 320px;
 }
 
+.Modal {
+  padding: 60px 0;
+}
+
+.Modal form {
+  margin: 0 auto;
+  max-width: 320px;
+}
+
+.Modal button {
+  float: 'right';
+}
+
 .thread-exit {
   position: relative;
   top: -9em;

@@ -4,6 +4,31 @@ import ReactDOM from 'react-dom';
 import ReactModal from 'react-modal';
 import Axios from 'axios';
 
+const modalStyles = {
+  overlay : {
+    position          : 'fixed',
+    top               : 0,
+    left              : 0,
+    right             : 0,
+    bottom            : 0,
+    backgroundColor   : 'rgba(204, 204, 204, 0.75)'
+  },
+  content : {
+    position                   : 'absolute',
+    top                        : '40px',
+    left                       : '300px',
+    right                      : '300px',
+    bottom                     : '40',
+    border                     : '1px solid #ccc',
+    background                 : '#fff',
+    overflow                   : 'auto',
+    WebkitOverflowScrolling    : 'touch',
+    borderRadius               : '4px',
+    outline                    : 'none',
+    padding                    : '20px'
+  }
+}
+
 export default class Login extends Component {
   constructor(props) {
     super(props);
@@ -32,7 +57,8 @@ export default class Login extends Component {
   }
 
   validateNewForm() {
-    return this.state.newemail.length > 0 && this.state.newpassword.length > 0 && this.state.newusername.length > 0 && this.state.profile.length > 0;
+    return this.state.newemail.length > 0 && this.state.newpassword.length > 0
+    && this.state.newusername.length > 0 && this.state.profile.length > 3;
   }
 
   handleChange(event) {
@@ -69,11 +95,11 @@ export default class Login extends Component {
     }).catch((failed)=>{ console.log('failed signup', failed)});
   }
 
-  profileSelect(evtKey, event) {
-    var selectedProfile = evtKey;
+  profileSelect(event) {
+    var selectedProfile = event.target.value;
     var newState = Object.assign({}, this.state);
     newState.profile = selectedProfile;
-    this.setState(newState, ()=>{console.log(this.state)})
+    this.setState(newState, ()=>{console.log(this.state)});
   }
 
   handleOpenModal (e) {
@@ -90,7 +116,7 @@ export default class Login extends Component {
     return (
       <div className="Login">
         <div className='row'>
-          <div className='col-md-2 col-md-offset-5'>
+          <div  style={{textAlign: 'center'}}>
           <h1>SoundConnect</h1>
           </div>
         </div>
@@ -118,23 +144,30 @@ export default class Login extends Component {
             block
             bsSize="large"
             disabled={!this.validateForm()}
-            type="button"
-          >
+            type="button">
             Login
           </Button>
           <Button
             block
             bsSize="large"
             type="button"
-            onClick={this.handleOpenModal}
-          >
+            onClick={this.handleOpenModal}>
             Register
           </Button>
           <ReactModal
            isOpen={this.state.showModal}
-           contentLabel="Minimal Modal Example"
+           contentLabel="PopUp"
+           style={modalStyles}
            >
-
+           <div>
+           <button
+             style={{float: 'right'}}
+             onClick={this.handleCloseModal}>
+             X
+           </button>
+            <h1 style={{display: 'inline'}}>Registration</h1>
+           </div>
+            <br/>
            <form onSubmit={this.handleSubmit}>
              <FormGroup controlId="newemail" bsSize="large" >
                <ControlLabel>Email</ControlLabel>
@@ -161,24 +194,22 @@ export default class Login extends Component {
                  onChange={this.handleChange}
                />
              </FormGroup>
-
-               <ButtonToolbar bsSize="large">
-
-                <Dropdown id="dropDown" className="dropdown" bsSize="large" onSelect={ (evtKey, event)=>{this.profileSelect(evtKey, event)} } >
-                  <Button bsSize="large">
-                    Profile Type
-                  </Button>
-                  <Dropdown.Toggle />
-                  <Dropdown.Menu>
-                    <MenuItem id={1} eventKey={"composer"} value="composer">Composer</MenuItem>
-                    <MenuItem id={2} eventKey={'musician'} value="musician">Musician</MenuItem>
-                  </Dropdown.Menu>
-                </Dropdown>
-              </ButtonToolbar>
-
+              <FormGroup controlId="profileselect" bsSize="large" >
+                <ControlLabel>Profile Type</ControlLabel>
+                <FormControl componentClass="select" placeholder="select" bsSize="large" onChange={this.profileSelect}>
+                  <option>---</option>
+                  <option value="composer">Composer</option>
+                  <option value="musician">Musician</option>
+                </FormControl>
+             </FormGroup>
               <br/>
-             <button className="btn-group" type='button' disabled={!this.validateNewForm()} onClick={this.signUp} >Submit</button>
-           <button className="btn-group" onClick={this.handleCloseModal}>Close Page</button>
+             <button
+               className="btn-group"
+               type='button'
+               disabled={!this.validateNewForm()}
+               onClick={this.signUp}>
+               Submit
+             </button>
            </form>
          </ReactModal>
         </form>
