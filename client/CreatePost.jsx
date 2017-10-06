@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import Dropzone from 'react-dropzone'
 import axios from 'axios';
-import { Button, FormControl, ControlLabel, FormGroup, Checkbox, Radio, Input, Well, Label } from 'react-bootstrap';
+import { Button, FormControl, ControlLabel, FormGroup, Checkbox, Radio, Input, Well, Label, InputGroup } from 'react-bootstrap';
 
 class CreatePost extends React.Component {
   constructor(props) {
@@ -84,7 +84,7 @@ class CreatePost extends React.Component {
           <ControlLabel>
             title
           </ControlLabel>
-          <FormControl type="text" placeholder="title" onKeyUp={(e)=> this.setInput(e, 'title')}> 
+          <FormControl type="text" placeholder="your title..." onKeyUp={(e)=> this.setInput(e, 'title')}> 
 
           </FormControl>
             <ControlLabel>
@@ -98,7 +98,7 @@ class CreatePost extends React.Component {
         <Well>
           <FormGroup>
             <ControlLabel>
-              Check Box to add instrument(s)
+              Click to add/remove instrument
             </ControlLabel>
             <br/>
               {
@@ -111,22 +111,24 @@ class CreatePost extends React.Component {
 
   
             <br/>
-            <ControlLabel>
-              instruments added:
-            </ControlLabel>
-              {'  '}
+            <Well>
+              <ControlLabel>added instrument(s)...</ControlLabel>
               <br/>
-               <ControlLabel>
+              <ControlLabel>
                 {this.state.instruments.map((instrument, key) => <Radio onChange={(e)=>console.log(e)} onClick={(e)=>{this.addInstrument(instrument)}} inline checked> {  instrument + ' '} </Radio>)}
               </ControlLabel>
+            </Well>
   
           </FormGroup>
 
-          <input placeholder='custom instrument...' onKeyUp={(e)=> this.setInput(e, 'customInstrument')}/>
-          <Button bsSize='xsmall' bsStyle='primary' onClick={()=> this.addInstrument() }>
-          add/remove
-          </Button>
-
+          <FormGroup>
+            <InputGroup>
+              <InputGroup.Button>
+                <Button bsStyle='primary' onClick={()=> this.addInstrument() }>select</Button>
+              </InputGroup.Button>
+              <FormControl type="text" placeholder='custom instrument to add/remove...' onKeyUp={(e)=> this.setInput(e, 'customInstrument')}/>
+            </InputGroup>
+          </FormGroup>
         </Well>
          
 
