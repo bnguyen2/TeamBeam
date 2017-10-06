@@ -12,6 +12,7 @@ export default class Thread extends React.Component {
     this.openPopup = this.openPopup.bind(this);
     this.closePopup = this.closePopup.bind(this);
     this.handleReply = this.handleReply.bind(this);
+    this.deletePosts = this.deletePosts.bind(this);
   }
   closePopup() {
     let newState = Object.assign({}, this.state);
@@ -45,6 +46,17 @@ export default class Thread extends React.Component {
     }, (err) => {
     });
   }
+
+  deletePosts(index) {
+    axios.delete(`/forum/${this.props.threadData.id}/posts/${this.state.posts[index].id}`)
+    .then(results => {
+      this.setState({
+        posts: results.data
+      })
+    }, (err) => {
+    });
+  }
+
   render() {
     return(
       <div>
@@ -67,10 +79,10 @@ export default class Thread extends React.Component {
           <img src={this.props.threadData.musicSheet}></img>
           <button onClick={this.closePopup}>Close</button>
           <div className="posts">
-            {this.state.posts.map((post) => {
+            {this.state.posts.map((post, index) => {
               return (
                 <div>
-                  <p>{post.message}</p>
+                  <p onClick={(e) => this.deletePosts(index)}>{post.message}</p>
                 </div>
               )
             })}

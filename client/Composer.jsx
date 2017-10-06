@@ -24,7 +24,7 @@ export default class Composer extends React.Component {
   }
 
   getUserData() {
-    axios.get('/user/masaki') // hardcoded endpoint for now
+    axios.get('/user/Austin') // hardcoded endpoint for now
       .then(response => {
         this.setState({
           user: response.data.user,
