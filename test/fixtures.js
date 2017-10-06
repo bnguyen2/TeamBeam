@@ -148,7 +148,7 @@ module.exports = function() {
         title: "Austin's thread",
         description: "Austin's thread description",
         instruments: JSON.stringify(['Piano']),
-        musicsheet: 'www.austin_musicsheet.jpg',
+        musicsheet: 'https://i.pinimg.com/736x/f8/04/cb/f804cbff9ca51419934b6665c758b977--alto-sax-sheet-music-free-sheet-music.jpg',
         user_id: 1
       }, {
         hasTimestamps: true
