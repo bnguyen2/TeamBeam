@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import Dropzone from 'react-dropzone'
 import axios from 'axios';
-import { Button, FormControl, ControlLabel, FormGroup, Checkbox, Radio, Input, Well } from 'react-bootstrap';
+import { Button, FormControl, ControlLabel, FormGroup, Checkbox, Radio, Input, Well, Label } from 'react-bootstrap';
 
 class CreatePost extends React.Component {
   constructor(props) {
@@ -45,13 +45,23 @@ class CreatePost extends React.Component {
     var instruments = this.state.instruments;
     instrument ? instrument = instrument : instrument = this.state.customInstrument;
     var indexToRemove = instruments.indexOf(instrument);
-
+  
     if (indexToRemove >= 0) {
       instruments.splice(indexToRemove, 1);
-    } else {
+    } else if(instrument.length) {
       instruments.push(instrument);
     }
-    this.setState({instruments: instruments});
+    this.setState({instruments: instruments}, () => {
+      var availableInstruments = this.state.availableInstruments;
+      indexToRemove = availableInstruments.indexOf(instrument);
+      if (indexToRemove >= 0) {
+        availableInstruments.splice(indexToRemove, 1);
+      } else if(instrument.length){
+        availableInstruments.push(instrument);
+      }
+      this.setState({availableInstruments: availableInstruments}, () => console.log(this.state.instruments))
+ 
+    });
   }
   onDrop(accepted, rejected){
     console.log(accepted[0].preview)
@@ -68,10 +78,6 @@ class CreatePost extends React.Component {
         <Button bsStyle='default' style={exit} onClick={()=> this.props.closePopup()}>
           X
         </Button>
-        <br/>
-        <ControlLabel>
-          POST to thread:
-        </ControlLabel>
         
         <br/>
         <FormGroup>
@@ -111,7 +117,7 @@ class CreatePost extends React.Component {
               {'  '}
               <br/>
                <ControlLabel>
-                {this.state.instruments.map((instrument, key) => <Radio readOnly inline checked> {  instrument + ' '} </Radio>)}
+                {this.state.instruments.map((instrument, key) => <Radio onChange={(e)=>console.log(e)} onClick={(e)=>{this.addInstrument(instrument)}} inline checked> {  instrument + ' '} </Radio>)}
               </ControlLabel>
   
           </FormGroup>
@@ -130,9 +136,9 @@ class CreatePost extends React.Component {
           
 
           <div style={exit}>
-            <ControlLabel>
-              uploaded Sheet
-            </ControlLabel>
+            <Label bsStyle='info'>
+              sheet uploaded ->
+            </Label>
             {' '}
             <img style={musicSheet} src={`${this.state.musicsheet}`}/>
           </div>

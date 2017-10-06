@@ -63,8 +63,11 @@ export default class Thread extends React.Component {
       <div>
         <div className="thread-summary" onClick={this.openPopup}>
           <h3>{this.props.threadData.title}</h3>
-          <p>{this.props.threadData.description}</p>
+          <RB.Well>
+            <p>{this.props.threadData.description}</p>
+          </RB.Well>
         </div>
+
         <Modal
           isOpen={this.state.popupIsOpen}
           onRequestClose={this.closePopup}
