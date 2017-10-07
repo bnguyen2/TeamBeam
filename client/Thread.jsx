@@ -41,7 +41,7 @@ export default class Thread extends React.Component {
     e.preventDefault();
     axios.post(`/forum/${this.props.threadData.id}/posts`, {
       message: e.target['reply-text'].value,
-      user_id: 1  //Change the hard-coded user id later when authentication is implemented
+      user_id: this.props.user.id
     })
     .then((results) => {
     }, (err) => {

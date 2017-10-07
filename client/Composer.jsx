@@ -12,42 +12,16 @@ const axios = require('axios');
 export default class Composer extends React.Component {
  constructor(props) {
     super(props);
-
-    this.state = {
-      user: {},
-      profile: {},
-      songs: [],
-      userposts: []
-    };
-
-    this.getUserData = this.getUserData.bind(this);
-  }
-
-  getUserData() {
-    axios.get('/user/Austin') // hardcoded endpoint for now
-      .then(response => {
-        this.setState({
-          user: response.data.user,
-          profile: response.data.profile
-        });
-      })
-      .catch(err => {
-        console.log(err)
-      });
-  }
-
-  componentDidMount() {
-    this.getUserData();
   }
 
   render() {
     return (
       <Grid>
         <Row>
-          <Col className="user"> <UserHeader user={this.state.user}/> </Col>
+          <Col className="user"> <UserHeader user={this.props.user}/> </Col>
         </Row>
         <Row>
-          <Col xs={6} md={6} className="about-me"> <AboutMe aboutme={this.state.profile}/> </Col>
+          <Col xs={6} md={6} className="about-me"> <AboutMe aboutme={this.props.profile}/> </Col>
           <Col xs={6} md={6} className="recent-track"> <Tracks/> </Col>
         </Row>
         <Row>
@@ -58,6 +32,3 @@ export default class Composer extends React.Component {
     );
   }
 }
-
-
-

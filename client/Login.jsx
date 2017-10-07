@@ -47,9 +47,7 @@ export default class Login extends Component {
     this.handleOpenModal = this.handleOpenModal.bind(this);
     this.handleCloseModal = this.handleCloseModal.bind(this);
     this.validateNewForm = this.validateNewForm.bind(this);
-    this.logIn = this.logIn.bind(this);
     this.profileSelect = this.profileSelect.bind(this);
-    this.signUp = this.signUp.bind(this);
   }
 
   validateForm() {
@@ -69,30 +67,6 @@ export default class Login extends Component {
 
   handleSubmit(event) {
     event.preventDefault();
-  }
-
-  logIn(){
-    const loginInfo = {
-      username: this.state.username,
-      password: this.state.password
-    };
-    Axios.post('/login', loginInfo).then((response) => {
-      console.log('login successfully');
-    }).catch((failed)=>{console.log('failed login')});
-  }
-
-  signUp(){
-    const signUpInfo = {
-      username: this.state.newusername,
-      password: this.state.newpassword,
-      email: this.state.newemail,
-      profile: this.state.profile
-    };
-
-    Axios.post('/signup', signUpInfo).then((response) => {
-      // TODO Redirect users to the next page
-      console.log('signup successfully');
-    }).catch((failed)=>{ console.log('failed signup', failed)});
   }
 
   profileSelect(event) {
@@ -117,7 +91,7 @@ export default class Login extends Component {
       <div className="Login">
         <div className='row'>
           <div  style={{textAlign: 'center'}}>
-          <h1>SoundConnect</h1>
+          <h1>Sound Connect</h1>
           </div>
         </div>
         <hr/>
@@ -140,7 +114,7 @@ export default class Login extends Component {
             />
           </FormGroup>
           <Button
-            onClick={this.logIn}
+            onClick={() => this.props.handleLogin(this.state.username, this.state.password)}
             block
             bsSize="large"
             disabled={!this.validateForm()}
@@ -207,7 +181,7 @@ export default class Login extends Component {
                className="btn-group"
                type='button'
                disabled={!this.validateNewForm()}
-               onClick={this.signUp}>
+               onClick={() => this.props.handleSignup(this.state.newusername, this.state.newpassword, this.state.profile)}>
                Submit
              </button>
            </form>

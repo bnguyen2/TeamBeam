@@ -12,6 +12,7 @@ module.exports = function() {
     .then(() => knex.schema.dropTableIfExists('posts'))
     .then(() => knex.schema.dropTableIfExists('threads'))
     .then(() => knex.schema.dropTableIfExists('users'))
+    .then(() => knex.schema.dropTableIfExists('sessions'))
 
     /* Create all tables */
     .then(() => {
@@ -88,7 +89,7 @@ module.exports = function() {
     .then(() => { //Create users
       return models.User.forge({
         username: 'Austin',
-        password: "Austin's password"
+        password: "Austin"
       }, {
         hasTimestamps: true
       }).save();

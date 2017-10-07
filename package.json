@@ -25,6 +25,7 @@
     "babel-register": "^6.7.2",
     "body-parser": "^1.18.2",
     "bookshelf": "^0.10.4",
+    "connect-session-knex": "^1.4.0",
     "cookie-parser": "^1.4.3",
     "express": "^4.16.1",
     "express-session": "^1.15.6",

@@ -1,18 +1,93 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { BrowserRouter, Route } from 'react-router-dom'
-import Musician from '../client/Musician.jsx'
-import Composer from '../client/Composer.jsx'
+import { BrowserRouter, Route, Redirect } from 'react-router-dom'
+import Profile from './Profile.jsx'
+
 import Login from './Login.jsx'
 import Forum from './Forum.jsx'
 import Navigation from './Navigation.jsx'
+const axios = require('axios');
 
-ReactDOM.render((
-  <BrowserRouter>
-    <Navigation>
-      <Route path="/" exact={true} component={Composer} />
-      <Route path="/forum" component={Forum} />
-      <Route path="/login" component={Login} />
-    </Navigation>
-  </BrowserRouter>
-), document.getElementById('app'));
+class App extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      user: {}
+    };
+    this.handleLogin = this.handleLogin.bind(this);
+    this.handleLogout = this.handleLogout.bind(this);
+    this.handleSignup = this.handleSignup.bind(this);
+  }
+  componentDidMount() {
+    axios.get('/deserialize')
+    .then((results) => {
+      console.log('ajax deserialize',results.data);
+      let newState = Object.assign({}, this.state);
+      newState.user.id = results.data.id;
+      newState.user.username = results.data.username;
+      this.setState(newState);
+    })
+  }
+
+  handleLogin(username, password) {
+    axios.post('/login', {
+      username: username,
+      password: password
+    }).then((response) => {
+      let newState = Object.assign({}, this.state);
+      newState.user = response.data;
+      this.setState(newState);
+    });
+  }
+
+  handleLogout() {
+    axios.post('/logout')
+    .then(() => {
+      let newState = Object.assign({}, this.state);
+      newState.user = {};
+      this.setState(newState);
+    });
+  }
+
+  handleSignup(username, password, profile) {
+    console.log('handling signup!')
+    let signUpInfo = {
+      username: username,
+      password: password,
+      profile: profile
+    };
+    axios.post('/signup', signUpInfo)
+    .then((response) => {
+      let newState = Object.assign({}, this.state);
+      newState.user = response.data;
+      this.setState(newState);
+    })
+    .catch((failed)=>{ console.log('failed signup', failed)});
+  }
+
+  render() {
+    return (
+      <BrowserRouter>
+        <Navigation handleLogout={this.handleLogout} user={this.state.user}>
+          <Route path="/" exact={true} render={(props) => (
+            this.state.user.id ?
+            (<Profile user={this.state.user} {...props}/>) :
+            (<Login handleSignup={this.handleSignup} handleLogin={this.handleLogin} {...props}/>)
+          )} />
+          <Route path="/forum" render={(props) => (
+            this.state.user.id ?
+            (<Forum user={this.state.user} {...props}/>) :
+            (<Login handleSignup={this.handleSignup}  handleLogin={this.handleLogin} {...props}/>)
+          )} />
+          <Route path="/login" render={(props) => (
+            this.state.user.id ?
+            (<Profile user={this.state.user} {...props}/>) :
+            (<Login handleSignup={this.handleSignup} handleLogin={this.handleLogin} {...props}/>)
+          )} />
+        </Navigation>
+      </BrowserRouter>
+    )
+  }
+}
+
+ReactDOM.render(<App />, document.getElementById('app'));

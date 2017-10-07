@@ -52,20 +52,21 @@ export default class Forum extends React.Component {
           Create new post
         </a>
 
-        <Modal 
-          isOpen={this.state.popupIsOpen}  
+        <Modal
+          isOpen={this.state.popupIsOpen}
           onRequestClose={this.closePopup.bind(this)}
           contentLabel="ThreadPopup"
         >
           <CreatePost closePopup={this.closePopup.bind(this)}/>
         </Modal>
-        
+
 
         <div className="threads">
           {this.state.threads.map((thread) => {
             return <Thread
               threadData={thread}
               key={thread.id}
+              user={this.props.user}
             />
           })}
         </div>
