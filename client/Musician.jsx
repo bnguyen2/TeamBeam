@@ -12,33 +12,6 @@ const axios = require('axios');
 export default class Musician extends React.Component {
  constructor(props) {
     super(props);
-
-    this.state = {
-      user: {},
-      profile: {},
-      songs: [],
-      albums: [],
-      collaboration: []
-    };
-
-    this.getUserData = this.getUserData.bind(this);
-  }
-
-  getUserData() {
-    axios.get('/user/Austin') // hardcoded endpoint for now
-      .then(response => {
-        this.setState({
-          user: response.data.user,
-          profile: response.data.profile
-        });
-      })
-      .catch(err => {
-        console.log(err)
-      });
-  }
-
-  componentDidMount() {
-    this.getUserData();
   }
 
   render() {
@@ -59,6 +32,3 @@ export default class Musician extends React.Component {
     );
   }
 }
-
-
-

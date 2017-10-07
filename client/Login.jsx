@@ -47,7 +47,7 @@ export default class Login extends Component {
     this.handleOpenModal = this.handleOpenModal.bind(this);
     this.handleCloseModal = this.handleCloseModal.bind(this);
     this.validateNewForm = this.validateNewForm.bind(this);
-    this.logIn = this.logIn.bind(this);
+    // this.logIn = this.logIn.bind(this);
     this.profileSelect = this.profileSelect.bind(this);
     this.signUp = this.signUp.bind(this);
   }
@@ -71,16 +71,16 @@ export default class Login extends Component {
     event.preventDefault();
   }
 
-  logIn(){
-    const loginInfo = {
-      username: this.state.username,
-      password: this.state.password
-    };
-    console.log('handler', this.state.username, this.state.password);
-    Axios.post('/login', loginInfo).then((response) => {
-      console.log('login successfully');
-    }).catch((failed)=>{console.log('failed login')});
-  }
+  // logIn(){
+  //   const loginInfo = {
+  //     username: this.state.username,
+  //     password: this.state.password
+  //   };
+  //   console.log('handler', this.state.username, this.state.password);
+  //   Axios.post('/login', loginInfo).then((response) => {
+  //     console.log('login successfully');
+  //   }).catch((failed)=>{console.log('failed login')});
+  // }
 
   signUp(){
     const signUpInfo = {
@@ -141,7 +141,7 @@ export default class Login extends Component {
             />
           </FormGroup>
           <Button
-            onClick={this.logIn}
+            onClick={() => this.props.handleLogin(this.state.username, this.state.password)}
             block
             bsSize="large"
             disabled={!this.validateForm()}

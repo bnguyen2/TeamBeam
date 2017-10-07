@@ -40,6 +40,4 @@ passport.deserializeUser(function(id, done) {
     });
 });
 
-module.exports.verify = passport.authenticate('local', {
-  successRedirect:'/', failureRedirect: '/login'
-});
+module.exports.verify = passport.authenticate('local');

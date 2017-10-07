@@ -95,7 +95,13 @@ routes.get('/deserialize', (req, res) => {  //MODIFY LATER not to send password
 
 /* ---------------------------- Handle POST Request ---------------------------- */
 
-routes.post('/login', login.verify);
+routes.post('/login', login.verify, (req, res) => {
+  console.log('loginser', req.user.id);
+  res.send({
+    id: req.user.id,
+    username: req.user.username
+  });
+});
 
 routes.post('/signup', /* Auth Middleware */ (req, res) => {
   var newUser = req.body.username;
