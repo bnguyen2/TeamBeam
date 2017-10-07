@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import Dropzone from 'react-dropzone'
 import axios from 'axios';
+import { Button, FormControl, ControlLabel, FormGroup, Checkbox, Radio, Input, Well, Label, InputGroup } from 'react-bootstrap';
 
 class CreatePost extends React.Component {
   constructor(props) {
@@ -12,7 +13,8 @@ class CreatePost extends React.Component {
       instruments: [],
       customInstrument: '',
       musicsheet: '',
-      sendable: {}
+      sendable: {},
+      availableInstruments: ['guitar', 'drums']
     };
   }
   constructPost(e) {
@@ -24,7 +26,8 @@ class CreatePost extends React.Component {
       musicsheet: this.state.musicsheet
     }
     this.setState({sendable: sendable}, ()=> {
-      axios.post('/forum', {data: this.state.sendable})
+      var data = this.state.sendable;
+      axios.post('/forum', data)
         .then(res => {
           console.log(res);
         })
@@ -42,13 +45,23 @@ class CreatePost extends React.Component {
     var instruments = this.state.instruments;
     instrument ? instrument = instrument : instrument = this.state.customInstrument;
     var indexToRemove = instruments.indexOf(instrument);
-
+  
     if (indexToRemove >= 0) {
       instruments.splice(indexToRemove, 1);
-    } else {
+    } else if(instrument.length) {
       instruments.push(instrument);
     }
-    this.setState({instruments: instruments});
+    this.setState({instruments: instruments}, () => {
+      var availableInstruments = this.state.availableInstruments;
+      indexToRemove = availableInstruments.indexOf(instrument);
+      if (indexToRemove >= 0) {
+        availableInstruments.splice(indexToRemove, 1);
+      } else if(instrument.length){
+        availableInstruments.push(instrument);
+      }
+      this.setState({availableInstruments: availableInstruments}, () => console.log(this.state.instruments))
+ 
+    });
   }
   onDrop(accepted, rejected){
     console.log(accepted[0].preview)
@@ -58,57 +71,97 @@ class CreatePost extends React.Component {
   }
 
   render() {
+    
+
     return (
-      <div>
-        POST to thread:
-        <br/>
-        <button style={exit} onClick={()=> this.props.closePopup()}>
+      <form>
+        <Button bsStyle='default' style={exit} onClick={()=> this.props.closePopup()}>
           X
-        </button>
+        </Button>
+        
         <br/>
-        <input placeholder='title' rows='3' onKeyUp={(e)=> this.setInput(e, 'title')}/>
-        <br/>
-        <textarea placeholder='your message...' onKeyUp={(e)=>this.setInput(e, 'description')}>
-        </textarea>
-        <br/>
-        <div>
-          Add Instruments...
-          <br/>
-          <input type='checkbox' onClick={()=> this.addInstrument('guitar')}/>
-            guitar
-          <input type='checkbox' onClick={()=> this.addInstrument('drums')}/>
-            drums
-          <br/>
+        <FormGroup>
+          <ControlLabel>
+            title
+          </ControlLabel>
+          <FormControl type="text" placeholder="your title..." onKeyUp={(e)=> this.setInput(e, 'title')}> 
 
-          instruments added ->
-            <div>
-            {this.state.instruments.map((instrument, key) => <span key={key}> {instrument + ', '} </span>)}
-            </div>
-          <br/>
-         
-          <input placeholder='custom instrument...' onKeyUp={(e)=> this.setInput(e, 'customInstrument')}/>
-          <button onClick={()=> this.addInstrument()}>
-          add/remove
-          </button>
-        </div>
-
-        <br/>
-
-        <Dropzone onDrop={this.onDrop.bind(this)}> Click to upload musicsheet
-        </Dropzone>
-        <div style={exit}>
-          uploaded Sheet ->
-          <img style={musicSheet} src={`${this.state.musicsheet}`}/>
-        </div>
-        <br/>
-        <button onClick={this.constructPost.bind(this)}>
-         Post message
-        </button>
+          </FormControl>
+            <ControlLabel>
+              message
+            </ControlLabel>
+            <FormControl componentClass="textarea" placeholder='your message...' onKeyUp={(e)=>this.setInput(e, 'description')}>
+            </FormControl>
+        </FormGroup>
        
+        <Well>
+          <FormGroup>
+            <InputGroup>
+              <InputGroup.Button>
+                <Button bsStyle='primary' onClick={()=> this.addInstrument() }>select</Button>
+              </InputGroup.Button>
+              <FormControl type="text" placeholder='custom instrument to add/remove...' onKeyUp={(e)=> this.setInput(e, 'customInstrument')}/>
+            </InputGroup>
+            <br/>
+            <ControlLabel>
+              Click instrument to add/remove
+            </ControlLabel>
+            <br/>
+              {
+                this.state.availableInstruments.map((instrument) => 
+                  <Checkbox inline onClick={()=> this.addInstrument(instrument)}>
+                    {instrument}
+                  </Checkbox>
+                )
+              }
+          </FormGroup>
 
-      </div>
+          <Well>
+            <ControlLabel>Listed instruments in your post...(click to remove)</ControlLabel>
+            <br/>
+            <ControlLabel>
+              {this.state.instruments.map((instrument, key) => 
+                <Radio onChange={(e)=>console.log(e)} onClick={(e)=>{this.addInstrument(instrument)}} inline checked> {  instrument + ' '} 
+                </Radio>
+              )}
+            </ControlLabel>
+          </Well>
+        </Well>
+
+        <div style={imgs}>
+          <div style={dropzone}>
+            <Dropzone onDrop={this.onDrop.bind(this)}> Click to upload musicsheet
+            </Dropzone>
+          </div>
+          
+          <div style={sheetWrapper}>
+            <Label bsStyle='info'>
+              {'sheet uploaded'}
+            </Label>
+            <br/>
+            {' '}
+            <img style={musicSheet} src={`${this.state.musicsheet}`}/>
+          </div>
+  
+          <br/>
+          <Button bsSize='large' bsStyle='success' onClick={this.constructPost.bind(this)}>
+           Post to thread
+          </Button>
+        </div>
+       
+      </form>
     )
   }
+}
+const imgs = {
+  marginRight: '30px'
+}
+const dropzone = {
+  'marginTop': '-10px'
+}
+const sheetWrapper = {
+  marginTop: '-125px',
+  marginLeft: '4px'
 }
 const musicSheet = {
   width: 100,
@@ -118,5 +171,6 @@ const musicSheet = {
 const exit = {
   float: 'right'
 }
+
 
 export default CreatePost;
