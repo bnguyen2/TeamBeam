@@ -90,14 +90,21 @@ class CreatePost extends React.Component {
             <ControlLabel>
               message
             </ControlLabel>
-            <FormControl type='text' placeholder='your message...' onKeyUp={(e)=>this.setInput(e, 'description')}>
+            <FormControl componentClass="textarea" placeholder='your message...' onKeyUp={(e)=>this.setInput(e, 'description')}>
             </FormControl>
         </FormGroup>
        
         <Well>
           <FormGroup>
+            <InputGroup>
+              <InputGroup.Button>
+                <Button bsStyle='primary' onClick={()=> this.addInstrument() }>select</Button>
+              </InputGroup.Button>
+              <FormControl type="text" placeholder='custom instrument to add/remove...' onKeyUp={(e)=> this.setInput(e, 'customInstrument')}/>
+            </InputGroup>
+            <br/>
             <ControlLabel>
-              Click to add/remove instrument
+              Click instrument to add/remove
             </ControlLabel>
             <br/>
               {
@@ -107,52 +114,54 @@ class CreatePost extends React.Component {
                   </Checkbox>
                 )
               }
+          </FormGroup>
 
-  
+          <Well>
+            <ControlLabel>Listed instruments in your post...(click to remove)</ControlLabel>
             <br/>
-            <Well>
-              <ControlLabel>added instrument(s)...</ControlLabel>
-              <br/>
-              <ControlLabel>
-                {this.state.instruments.map((instrument, key) => <Radio onChange={(e)=>console.log(e)} onClick={(e)=>{this.addInstrument(instrument)}} inline checked> {  instrument + ' '} </Radio>)}
-              </ControlLabel>
-            </Well>
-  
-          </FormGroup>
-
-          <FormGroup>
-            <InputGroup>
-              <InputGroup.Button>
-                <Button bsStyle='primary' onClick={()=> this.addInstrument() }>select</Button>
-              </InputGroup.Button>
-              <FormControl type="text" placeholder='custom instrument to add/remove...' onKeyUp={(e)=> this.setInput(e, 'customInstrument')}/>
-            </InputGroup>
-          </FormGroup>
+            <ControlLabel>
+              {this.state.instruments.map((instrument, key) => 
+                <Radio onChange={(e)=>console.log(e)} onClick={(e)=>{this.addInstrument(instrument)}} inline checked> {  instrument + ' '} 
+                </Radio>
+              )}
+            </ControlLabel>
+          </Well>
         </Well>
-         
 
-          <Dropzone onDrop={this.onDrop.bind(this)}> Click to upload musicsheet
-          </Dropzone>
-    
+        <div style={imgs}>
+          <div style={dropzone}>
+            <Dropzone onDrop={this.onDrop.bind(this)}> Click to upload musicsheet
+            </Dropzone>
+          </div>
           
-
-          <div style={exit}>
+          <div style={sheetWrapper}>
             <Label bsStyle='info'>
-              sheet uploaded ->
+              {'sheet uploaded'}
             </Label>
+            <br/>
             {' '}
             <img style={musicSheet} src={`${this.state.musicsheet}`}/>
           </div>
-
-        <br/>
-        <Button bsSize='large' bsStyle='success' onClick={this.constructPost.bind(this)}>
-         Post to thread
-        </Button>
+  
+          <br/>
+          <Button bsSize='large' bsStyle='success' onClick={this.constructPost.bind(this)}>
+           Post to thread
+          </Button>
+        </div>
        
-
       </form>
     )
   }
+}
+const imgs = {
+  marginRight: '30px'
+}
+const dropzone = {
+  'marginTop': '-10px'
+}
+const sheetWrapper = {
+  marginTop: '-125px',
+  marginLeft: '4px'
 }
 const musicSheet = {
   width: 100,
