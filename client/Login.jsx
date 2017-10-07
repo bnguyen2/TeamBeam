@@ -76,6 +76,7 @@ export default class Login extends Component {
       username: this.state.username,
       password: this.state.password
     };
+    console.log('handler', this.state.username, this.state.password);
     Axios.post('/login', loginInfo).then((response) => {
       console.log('login successfully');
     }).catch((failed)=>{console.log('failed login')});

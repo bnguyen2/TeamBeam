@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Nav, Navbar, NavItem, NavDropdown,  MenuItem} from 'react-bootstrap'
 import { Link } from 'react-router-dom'
+const axios = require('axios');
 
 export default class Navigation extends React.Component {
  constructor(props) {
@@ -10,6 +11,14 @@ export default class Navigation extends React.Component {
     this.state = {
       view: ""
     };
+    this.handleLogout = this.handleLogout.bind(this);
+  }
+
+  handleLogout() {
+    console.log('logout handler')
+    axios.post('/logout')
+    .then(() => {
+    });
   }
 
   // create more dropdown and functionality
@@ -39,7 +48,7 @@ export default class Navigation extends React.Component {
                    <MenuItem eventKey={5.1}>Placeholder</MenuItem>
                    <MenuItem eventKey={5.2}>Settings</MenuItem>
                    <MenuItem divider />
-                   <MenuItem eventKey={5.3}><Link to="/login">Log Out</Link></MenuItem>
+                   <MenuItem eventKey={5.3}><Link onClick={this.handleLogout} to="/login">Log Out</Link></MenuItem>
                  </NavDropdown>
                </Nav>
 

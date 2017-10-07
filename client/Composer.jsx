@@ -23,8 +23,8 @@ export default class Composer extends React.Component {
     this.getUserData = this.getUserData.bind(this);
   }
 
-  getUserData() {
-    axios.get('/user/Austin') // hardcoded endpoint for now
+  getUserData(username) {
+    axios.get('/user/' + username)
       .then(response => {
         this.setState({
           user: response.data.user,
@@ -37,14 +37,13 @@ export default class Composer extends React.Component {
   }
 
   componentDidMount() {
-    this.getUserData();
   }
 
   render() {
     return (
       <Grid>
         <Row>
-          <Col className="user"> <UserHeader user={this.state.user}/> </Col>
+          <Col className="user"> <UserHeader user={this.props.user}/> </Col>
         </Row>
         <Row>
           <Col xs={6} md={6} className="about-me"> <AboutMe aboutme={this.state.profile}/> </Col>
@@ -58,6 +57,3 @@ export default class Composer extends React.Component {
     );
   }
 }
-
-
-

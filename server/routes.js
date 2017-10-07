@@ -1,17 +1,20 @@
+const path = require('path');
 const routes = require('express').Router();
 const models = require('../db/models');
 const login = require('./login');
 
 
+
 /* ---------------------------- Handle GET Request ---------------------------- */
 
 routes.get('/', (req, res) => {
-  res.send('index')
+  res.sendFile(path.resolve(__dirname, '../public/index.html'))
 });
 
 routes.get('/user/:username', (req, res) => {
   let username = req.params.username; // username endpoint
   let userData = {}
+  console.log('get here', username);
 
   models.User.query('where', 'username', '=', username).fetch()
     .then(userResults => {
@@ -85,6 +88,11 @@ routes.get('/forum/:threadId/posts/:postId', /* Auth Middleware */  (req, res) =
   });
 });
 
+routes.get('/deserialize', (req, res) => {  //MODIFY LATER not to send password
+  console.log('server des', req.user);
+  res.send(req.user);
+});
+
 /* ---------------------------- Handle POST Request ---------------------------- */
 
 routes.post('/login', login.verify);
@@ -131,6 +139,12 @@ routes.post('/forum/:threadId/posts', /* Auth Middleware */ (req, res) => {
   });
 });
 
+routes.post('/logout', (req, res) => {
+  req.session.destroy(function (err) {
+    res.end();
+  });
+});
+
 /* ---------------------------- Handle DELETE/UPDATE Request ---------------------------- */
 
 routes.delete('/forum/:threadId/posts/:postId', /* Auth Middleware */ (req, res) => {
@@ -163,4 +177,3 @@ routes.delete('/forum/:threadId/posts/:postId', /* Auth Middleware */ (req, res)
 });
 
 module.exports = routes;
-

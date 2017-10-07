@@ -87,8 +87,8 @@ module.exports = function() {
     /* Populate database with fixtures */
     .then(() => { //Create users
       return models.User.forge({
-        username: 'Austin',
-        password: "Austin's password"
+        username: 'a',
+        password: "a"
       }, {
         hasTimestamps: true
       }).save();

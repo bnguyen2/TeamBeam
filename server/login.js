@@ -6,6 +6,7 @@ const LocalStrategy = require('passport-local').Strategy;
 
 
 passport.use(new LocalStrategy((username, password, done) => {
+  console.log('passport', username);
   models.User.byUsername(username).then((userObj) => {
 
     if (userObj === null) {
@@ -32,7 +33,6 @@ passport.serializeUser(function(user, done) {
 passport.deserializeUser(function(id, done) {
   models.User.forge().query({where:{ id: id }}).fetch()
     .then((user) => {
-      console.log('deserial', user)
       done(null, user.attributes);
     })
     .catch((err) => {
