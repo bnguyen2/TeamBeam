@@ -4,29 +4,22 @@ const passport = require('passport');
 const models = require('../db/models.js');
 const LocalStrategy = require('passport-local').Strategy;
 
-
 passport.use(new LocalStrategy((username, password, done) => {
-  console.log('passport', username);
   models.User.byUsername(username).then((userObj) => {
-
     if (userObj === null) {
       return done(null, false, { message: 'Incorrect username.' });
-    }
-    if (password !== userObj.get('password')) {
+    } else if (password !== userObj.get('password')) {
       console.log('wrong password');
       done(null, false, { message: 'Incorrect password.' });
+    } else {
+      return done(null, userObj.attributes);
     }
-    console.log('good')
-    return done(null, userObj.attributes);
-
   }).catch((err) => {
     console.log(err);
   });
-
 }));
 
 passport.serializeUser(function(user, done) {
-  console.log('serializeUser')
   done(null, user.id);
 });
 

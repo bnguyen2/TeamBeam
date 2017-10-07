@@ -16,6 +16,7 @@ class App extends React.Component {
     };
     this.handleLogin = this.handleLogin.bind(this);
     this.handleLogout = this.handleLogout.bind(this);
+    this.handleSignup = this.handleSignup.bind(this);
   }
   componentDidMount() {
     axios.get('/deserialize')
@@ -48,24 +49,40 @@ class App extends React.Component {
     });
   }
 
+  handleSignup(username, password, profile) {
+    console.log('handling signup!')
+    let signUpInfo = {
+      username: username,
+      password: password,
+      profile: profile
+    };
+    axios.post('/signup', signUpInfo)
+    .then((response) => {
+      let newState = Object.assign({}, this.state);
+      newState.user = response.data;
+      this.setState(newState);
+    })
+    .catch((failed)=>{ console.log('failed signup', failed)});
+  }
+
   render() {
     return (
       <BrowserRouter>
-        <Navigation handleLogout={this.handleLogout}>
+        <Navigation handleLogout={this.handleLogout} user={this.state.user}>
           <Route path="/" exact={true} render={(props) => (
             this.state.user.id ?
             (<Profile user={this.state.user} {...props}/>) :
-            (<Login handleLogin={this.handleLogin} {...props}/>)
+            (<Login handleSignup={this.handleSignup} handleLogin={this.handleLogin} {...props}/>)
           )} />
           <Route path="/forum" render={(props) => (
             this.state.user.id ?
             (<Forum user={this.state.user} {...props}/>) :
-            (<Login handleLogin={this.handleLogin} {...props}/>)
+            (<Login handleSignup={this.handleSignup}  handleLogin={this.handleLogin} {...props}/>)
           )} />
           <Route path="/login" render={(props) => (
             this.state.user.id ?
             (<Profile user={this.state.user} {...props}/>) :
-            (<Login handleLogin={this.handleLogin} {...props}/>)
+            (<Login handleSignup={this.handleSignup} handleLogin={this.handleLogin} {...props}/>)
           )} />
         </Navigation>
       </BrowserRouter>

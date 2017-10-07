@@ -26,12 +26,8 @@ export default class Profile extends React.Component {
       let newState = Object.assign({}, this.state);
       newState.profile = results.data.profile;
       this.setState(newState);
-      console.log('got profile', newState.profile)
     })
   }
-  // componentWillReceiveProps() {
-  //   this.getProfile();
-  // }
 
   render() {
     if(this.state.profile.profiletype === 'composer') {
