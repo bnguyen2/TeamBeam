@@ -57,7 +57,7 @@ export default class Forum extends React.Component {
           onRequestClose={this.closePopup.bind(this)}
           contentLabel="ThreadPopup"
         >
-          <CreatePost closePopup={this.closePopup.bind(this)}/>
+          <CreatePost user={this.props.user} closePopup={this.closePopup.bind(this)}/>
         </Modal>
 
 

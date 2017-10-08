@@ -20,10 +20,13 @@ class CreatePost extends React.Component {
   constructPost(e) {
     e.preventDefault();
     var sendable = {
+      user_id: this.props.user.id,
       title: this.state.title,
-      instruments: this.state.instruments,
-      description: this.state.message,
-      musicsheet: this.state.musicsheet
+      instruments: JSON.stringify(this.state.instruments),
+      description: this.state.description,
+      musicsheet: this.state.musicsheet,
+      created_at: new Date(),
+      updated_at: new Date()
     }
     this.setState({sendable: sendable}, ()=> {
       var data = this.state.sendable;
