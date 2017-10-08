@@ -7,8 +7,8 @@ const UserHeader = (props) => (
 			<PageHeader>
 			  {props.user.username === undefined ? null : props.user.username.substring(0, 1).toUpperCase() + props.user.username.substring(1)}
 			</PageHeader>
-				<div>Location: US, San Francisco [TBD Data] </div>
-				<div>Age: 26 [TBD Data]</div>
+				<div>Location: US, San Francisco </div>
+				<div>Age: 26</div>
 	  </Col>
 	</Grid>
 )
