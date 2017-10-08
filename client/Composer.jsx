@@ -14,6 +14,7 @@ export default class Composer extends React.Component {
     super(props);
   }
 
+
   render() {
     return (
       <Grid>
@@ -26,7 +27,7 @@ export default class Composer extends React.Component {
         </Row>
         <Row>
           <Col xs={6} md={6} className="collaboration"> <Collaboration/> </Col>
-          <Col xs={6} md={6} className="user-post"> <UserPost/>  </Col>
+          <Col xs={6} md={6} className="user-post"> <UserPost posts={this.props.posts}/>  </Col>
         </Row>
       </Grid>
     );

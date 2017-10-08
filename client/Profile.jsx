@@ -15,10 +15,14 @@ export default class Profile extends React.Component {
  constructor(props) {
     super(props);
     this.state = {
-      profile: {}
+      profile: {},
+      posts: []
     };
     this.getProfile = this.getProfile.bind(this);
+    this.getPosts = this.getPosts.bind(this);
     this.getProfile();
+    this.getPosts();
+
   }
   getProfile() {
     axios.get(`/user/${this.props.user.username}`)
@@ -29,13 +33,22 @@ export default class Profile extends React.Component {
     })
   }
 
+  getPosts() {
+    axios.get(`/user/${this.props.user.id}/posts`)
+    .then((results) => {
+      let newState = Object.assign({}, this.state);
+      newState.posts = results.data;
+      this.setState(newState);
+    })
+  }
+
   render() {
     if(this.state.profile.profiletype === 'composer') {
-      return <Composer user={this.props.user} profile={this.state.profile}></Composer>
+      return <Composer user={this.props.user} profile={this.state.profile} posts={this.state.posts}></Composer>
     } else if (this.state.profile.profiletype === 'musician') {
       return <Musician user={this.props.user} profile={this.state.profile}></Musician>
     } else {
-      return <p>Loadign profile...</p>
+      return <p>Loading profile...</p>
     }
   }
 }

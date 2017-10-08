@@ -18,10 +18,10 @@ export default class Musician extends React.Component {
     return (
       <Grid>
         <Row >
-          <Col className="user"> <UserHeader user={this.state.user}/> </Col>
+          <Col className="user"> <UserHeader user={this.props.user}/> </Col>
         </Row>
         <Row>
-          <Col xs={6} md={6} className="about-me"> <AboutMe aboutme={this.state.profile}/> </Col>
+          <Col xs={6} md={6} className="about-me"> <AboutMe aboutme={this.props.profile}/> </Col>
           <Col xs={6} md={6} className="recent-track"> <Tracks/> </Col>
         </Row>
         <Row>

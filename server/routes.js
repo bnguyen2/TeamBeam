@@ -65,7 +65,6 @@ routes.get('/forum/:threadId/posts',  (req, res) => {
   });
 });
 
-// route to individual post
 routes.get('/forum/:threadId/posts/:postId', /* Auth Middleware */  (req, res) => {
   models.Post.query('where', 'id', '=', req.params.postId).fetch()
   .then((results) => {
@@ -79,6 +78,19 @@ routes.get('/forum/:threadId/posts/:postId', /* Auth Middleware */  (req, res) =
 
 routes.get('/deserialize', (req, res) => {  //MODIFY LATER not to send password
   res.send(req.user);
+});
+
+routes.get('/user/:userId/posts', (req, res) => {
+  models.Post.query('where', 'user_id', '=', req.params.userId).fetchAll()
+  .then((results) => {
+    let posts = results.models.map((modelBase) => {
+      return modelBase.attributes;
+    });
+    res.send(posts);
+  }, (err) => {
+    res.status(400);
+    res.end();
+  });
 });
 
 /* ---------------------------- Handle POST Request ---------------------------- */
