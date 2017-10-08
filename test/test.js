@@ -16,6 +16,36 @@ describe('Sound Connect API:', function() {
     initFixtures().then(() => done());
   });
 
+  describe('GET /', function() {
+    it('should return an html file', function(done) {
+      rp({
+        method: 'GET',
+        uri: `http://localhost:${PORT}/`,
+      })
+      .then((results) => {
+        expect(results.includes('<!DOCTYPE html>')).to.equal(true);
+        done();
+      });
+    });
+  });
+
+  describe('GET /user/:username', function() {
+    it('should return user and profile associated with the user', function(done) {
+      rp({
+        method: 'GET',
+        uri: `http://localhost:${PORT}/user/Austin`,
+        json: true
+      })
+      .then((results) => {
+        expect(results.user.id).to.equal(1);
+        expect(results.user.username).to.equal('Austin');
+        expect(results.profile.user_id).to.equal(1);
+        expect(results.profile.bio).to.equal("Austin's bio");
+        done()
+      });
+    });
+  });
+
   describe('GET /forum', function() {
     it('should return an array of thread objects', function(done) {
       request({
@@ -28,6 +58,85 @@ describe('Sound Connect API:', function() {
         expect(body[0].title).to.equal("Austin's thread");
         done();
       });
+    });
+  });
+
+  describe('GET /forum/:threadId/posts', function() {
+    it('should return an array of post objects that belong to the given thread', function(done) {
+      rp({
+        method: 'GET',
+        uri: `http://localhost:${PORT}/forum/1/posts`,
+        json: true
+      })
+      .then((results) => {
+        expect(results).to.be.a('array');
+        expect(results[0].thread_id).to.equal(1);
+        expect(results[0].message).to.equal('Evan\'s message');
+        done();
+      });
+    });
+  });
+
+  describe('GET /forum/:threadId/posts/:postId', function() {
+    it('should return the specified post object in the given thread', function(done) {
+      rp({
+        method: 'GET',
+        uri: `http://localhost:${PORT}/forum/1/posts/1`,
+        json: true
+      })
+      .then((results) => {
+        expect(results.id).to.equal(1);
+        expect(results.message).to.equal('Evan\'s message');
+        done();
+      });
+    });
+  });
+
+  describe('POST /login', function() {
+    it('should login and return user id when correct username and password are supplied', function(done) {
+      rp({
+        method: 'POST',
+        uri: `http://localhost:${PORT}/login`,
+        json: {
+          username: 'Austin',
+          password: 'Austin'
+        }
+      })
+      .then((results) => {
+        expect(results.id).to.equal(1);
+        done();
+      });
+    });
+
+    it('should not login when incorrect username and password are supplied', function(done) {
+      rp({
+        method: 'POST',
+        uri: `http://localhost:${PORT}/login`,
+        json: {
+          username: 'Fake user',
+          password: 'Fake password'
+        }
+      })
+      .catch((err) => {
+        expect(err.statusCode).to.equal(401);
+        done();
+      });
+    });
+
+    it('should insert new session into sessions table', function(done) {
+      // rp({
+      //   method: 'POST',
+      //   uri: `http://localhost:${PORT}/login`,
+      //   json: {
+      //     username: 'Austin',
+      //     password: 'Austin'
+      //   }
+      // })
+      // .then((results) => {
+      //   expect(results.id).to.equal(1);
+      //   done();
+      // });
+      done()
     });
   });
 
