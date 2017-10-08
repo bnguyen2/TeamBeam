@@ -109,7 +109,7 @@ class CreatePost extends React.Component {
             <br/>
               {
                 this.state.availableInstruments.map((instrument) => 
-                  <Checkbox inline onClick={()=> this.addInstrument(instrument)}>
+                  <Checkbox style={checkbox} inline onClick={()=> this.addInstrument(instrument)}>
                     {instrument}
                   </Checkbox>
                 )
@@ -121,7 +121,10 @@ class CreatePost extends React.Component {
             <br/>
             <ControlLabel>
               {this.state.instruments.map((instrument, key) => 
-                <Radio onChange={(e)=>console.log(e)} onClick={(e)=>{this.addInstrument(instrument)}} inline checked> {  instrument + ' '} 
+                <Radio style={checkbox} onChange={(e)=>console.log(e)} onClick={(e)=>{this.addInstrument(instrument)}} inline checked> 
+                 <Well>
+                  {  instrument + ' '} 
+                </Well>
                 </Radio>
               )}
             </ControlLabel>
@@ -170,6 +173,9 @@ const musicSheet = {
 }
 const exit = {
   float: 'right'
+}
+const checkbox = {
+  'text-shadow': '1px 1px grey'
 }
 
 
