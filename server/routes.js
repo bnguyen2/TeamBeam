@@ -121,6 +121,7 @@ routes.post('/signup', (req, res) => {
 routes.post('/forum', (req, res) => {
   models.Thread.forge(req.body).save()
   .then((results) => {
+    console.log(results)
     res.status(200);
     res.end();
   }, (err) => {

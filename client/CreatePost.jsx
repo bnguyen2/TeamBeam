@@ -20,10 +20,13 @@ class CreatePost extends React.Component {
   constructPost(e) {
     e.preventDefault();
     var sendable = {
+      user_id: this.props.user.id,
       title: this.state.title,
-      instruments: this.state.instruments,
-      description: this.state.message,
-      musicsheet: this.state.musicsheet
+      instruments: JSON.stringify(this.state.instruments),
+      description: this.state.description,
+      musicsheet: this.state.musicsheet,
+      created_at: new Date(),
+      updated_at: new Date()
     }
     this.setState({sendable: sendable}, ()=> {
       var data = this.state.sendable;
@@ -109,7 +112,7 @@ class CreatePost extends React.Component {
             <br/>
               {
                 this.state.availableInstruments.map((instrument) => 
-                  <Checkbox inline onClick={()=> this.addInstrument(instrument)}>
+                  <Checkbox style={checkbox} inline onClick={()=> this.addInstrument(instrument)}>
                     {instrument}
                   </Checkbox>
                 )
@@ -121,7 +124,10 @@ class CreatePost extends React.Component {
             <br/>
             <ControlLabel>
               {this.state.instruments.map((instrument, key) => 
-                <Radio onChange={(e)=>console.log(e)} onClick={(e)=>{this.addInstrument(instrument)}} inline checked> {  instrument + ' '} 
+                <Radio style={checkbox} onChange={(e)=>console.log(e)} onClick={(e)=>{this.addInstrument(instrument)}} inline checked> 
+                 <Well>
+                  {  instrument + ' '} 
+                </Well>
                 </Radio>
               )}
             </ControlLabel>
@@ -170,6 +176,9 @@ const musicSheet = {
 }
 const exit = {
   float: 'right'
+}
+const checkbox = {
+  'text-shadow': '1px 1px grey'
 }
 
 
