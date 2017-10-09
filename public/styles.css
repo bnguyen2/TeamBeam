@@ -1,5 +1,4 @@
 @charset "UTF-8";
-@import url(font-awesome.min.css);
 @import url("http://fonts.googleapis.com/css?family=Source+Sans+Pro:200");
 
 
@@ -57,7 +56,7 @@ table {
 
 /**** End ***/
 
-body, input, select, textarea {
+body, input, select, textarea, html {
   color: rgba(255, 255, 255, 0.65);
   font-family: "Source Sans Pro", Helvetica, sans-serif;
   font-size: 16px;
@@ -104,4 +103,6 @@ textarea {
 .about-me, .recent-track, .collab, .post {
   font-size: 16px;
 }
+
+
 

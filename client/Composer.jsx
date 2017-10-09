@@ -14,22 +14,23 @@ export default class Composer extends React.Component {
     super(props);
   }
 
-
   render() {
     return (
-      <Grid>
-        <Row>
-          <Col> <UserHeader user={this.props.user}/> </Col>
-        </Row>
-        <Row>
-          <Col xs={6} md={6}> <AboutMe aboutme={this.props.profile}/> </Col>
-          <Col xs={6} md={6}> <Tracks/> </Col>
-        </Row>
-        <Row>
-          <Col xs={6} md={6}> <Collaboration/> </Col>
-          <Col xs={6} md={6}> <UserPost posts={this.props.posts}/>  </Col>
-        </Row>
-      </Grid>
+      <div className="composer">
+        <Grid>
+          <Row>
+            <Col> <UserHeader user={this.props.user}/> </Col>
+          </Row>
+          <Row>
+            <Col xs={6} md={6}> <AboutMe aboutme={this.props.profile}/> </Col>
+            <Col xs={6} md={6}> <Tracks albums={this.props.albums}/> </Col>
+          </Row>
+          <Row>
+            <Col xs={6} md={6}> <Collaboration/> </Col>
+            <Col xs={6} md={6}> <UserPost posts={this.props.posts}/>  </Col>
+          </Row>
+        </Grid>
+      </div>
     );
   }
 }
