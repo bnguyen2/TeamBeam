@@ -1,11 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { BrowserRouter, Route, Redirect } from 'react-router-dom'
-import Profile from './Profile.jsx'
-
-import Login from './Login.jsx'
-import Forum from './Forum.jsx'
-import Navigation from './Navigation.jsx'
+import { BrowserRouter, Route, Redirect } from 'react-router-dom';
+import Profile from './Profile.jsx';
+import Setting from './Setting.jsx';
+import Login from './Login.jsx';
+import Forum from './Forum.jsx';
+import Navigation from './Navigation.jsx';
 const axios = require('axios');
 
 class App extends React.Component {
@@ -82,6 +82,11 @@ class App extends React.Component {
           <Route path="/login" render={(props) => (
             this.state.user.id ?
             (<Profile user={this.state.user} {...props}/>) :
+            (<Login handleSignup={this.handleSignup} handleLogin={this.handleLogin} {...props}/>)
+          )} />
+          <Route path="/setting" render={(props) => (
+            this.state.user.id ?
+            (<Setting user={this.state.user} {...props}/>) :
             (<Login handleSignup={this.handleSignup} handleLogin={this.handleLogin} {...props}/>)
           )} />
         </Navigation>

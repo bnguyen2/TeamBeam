@@ -9,6 +9,22 @@ routes.get('/', (req, res) => {
   res.sendFile(path.resolve(__dirname, '../public/index.html'))
 });
 
+routes.get('/userprofile/:id', (req, res) => {
+  let userId = req.params.id; //
+  let userData = {};
+  console.log(userId)
+
+  models.Profile.query('where', 'user_id', '=', userId).fetch()
+  .then((profileResults) => {
+    userData.profile = profileResults
+    res.status(200);
+    res.send(userData); })
+  .catch((err) => {
+    console.log('Profile does not exist', err);
+    res.end();
+  })
+});
+
 routes.get('/user/:username', (req, res) => {
   let username = req.params.username; // username endpoint
   let userData = {}
@@ -169,6 +185,7 @@ routes.post('/forum/:threadId/posts', (req, res) => {
 });
 
 routes.post('/logout', (req, res) => {
+  console.log('req.session', req.session)
   req.session.destroy(function (err) {
     res.end();
   });
@@ -203,6 +220,13 @@ routes.delete('/forum/:threadId/posts/:postId', /* Auth Middleware */ (req, res)
       res.status(400);
       res.end();
     })
+});
+
+routes.patch('/profile/:id', (req, res) =>{
+  let id = req.params.id;
+  console.log('LOOK HERE', req.body)
+  res.end()
+  //models.Profile.where({user_id: id}).save
 });
 
 module.exports = routes;
