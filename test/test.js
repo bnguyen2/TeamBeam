@@ -292,9 +292,15 @@ describe('Sound Connect API:', function() {
         method: 'DELETE',
         uri: `http://localhost:${PORT}/forum/1/posts/1`
       })
-      .then(() => models.Post.query('where', 'id', '=', '1').fetch())
+      .then(() => {
+        return new Promise((resolve, reject) => {
+          setTimeout(() => {
+            models.Post.query('where', 'id', '=', '1').fetch()
+            .then(resolve, reject);
+          }, 500);
+        })
+      })
       .then((results) => {
-        console.log(results);
         expect(results).to.be.a('null');
         done()
       });
