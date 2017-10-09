@@ -93,6 +93,19 @@ routes.get('/user/:userId/posts', (req, res) => {
   });
 });
 
+routes.get('/user/:userId/albums', (req, res) => {
+  models.Album.query('where', 'user_id', '=', req.params.userId).fetchAll()
+  .then((results) => {
+    let albums = results.models.map((modelBase) => {
+      return modelBase.attributes;
+    });
+    res.send(albums);
+  }, (err) => {
+    res.status(400);
+    res.end();
+  });
+});
+
 /* ---------------------------- Handle POST Request ---------------------------- */
 
 routes.post('/login', login.verify, (req, res) => {

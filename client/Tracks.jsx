@@ -1,12 +1,19 @@
 import React from 'react';
 
-// Likely refactor to state? Need to store tracks
+// Likely refactor. Need to store tracks
 
-const Tracks = (props) => (
-	<div>
-		<h3> Recent Tracks </h3>
-			<p> Limitless </p>
-	</div>
-)
+const Tracks = (props) => {
+
+	let albums = props.albums.map(album => {
+		let songs = JSON.parse(album.songs).map(song => <li className="tracks"> {song} </li> );
+		  return <div className="album-title"> {album.title} {songs} </div>});
+
+	return (
+		<div className="recent-track">
+			<h3> Recent Tracks </h3>
+				<div> {albums} </div>
+		</div>
+  )
+}
 
 export default Tracks

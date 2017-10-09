@@ -124,7 +124,7 @@ module.exports = function() {
       }, Promise.resolve());
     })
     .then(() => { //Create albums
-      return _.range(11, 21).reduce((prev, cur, i, arr) => {
+      return _.range(1, 11).reduce((prev, cur, i, arr) => {
         return prev.then(() => {
           return models.Album.forge({
             title: `User${cur}'s album`,

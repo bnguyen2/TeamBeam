@@ -2,10 +2,9 @@ import React from 'react';
 
 const UserPost = (props) => {
 	let posts = props.posts.map(post => <li> {post.message} </li>);
-	console.log(props);
 
 	return (
-		<div>
+		<div className="post">
 			<h3> Recent Posts </h3>
 			<div> {posts} </div>
 		</div>

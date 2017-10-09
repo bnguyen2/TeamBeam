@@ -5,12 +5,10 @@ const ProfImg = (props) => {
     //props.profPic = stockPhotoSrc
 	return (
     <div>
-      <div> 
-        
+      <div>
       </div>
-
-      <div className='ImgContainer'> 
-        <img className='profImg' src={`${props.profPic}`} /> 
+      <div className='ImgContainer'>
+        <img className='profImg' src={`${props.profPic}`} />
       </div>
     </div>
 	)
