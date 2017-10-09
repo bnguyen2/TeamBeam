@@ -36,15 +36,15 @@ export default class Navigation extends React.Component {
                  (<Nav pullRight>
                    <NavDropdown eventKey={5} title="Account" id="basic-nav-dropdown">
                      <MenuItem eventKey={5.1}>Placeholder</MenuItem>
-                     <MenuItem eventKey={5.2}>Settings</MenuItem>
+                     <MenuItem eventKey={5.2}><Link to="/setting">Setting</Link></MenuItem>
                      <MenuItem divider />
-                     <MenuItem eventKey={5.3}><Link onClick={this.props.handleLogout} to="/login">Log Out</Link></MenuItem>
+                     <MenuItem eventKey={5.3} href="#"><Link to="/login">Log Out</Link></MenuItem>
                    </NavDropdown>
                  </Nav>) :
                  (<Nav pullRight>
                    <NavDropdown eventKey={5} title="Account" id="basic-nav-dropdown">
                      <MenuItem eventKey={5.1}>Placeholder</MenuItem>
-                     <MenuItem eventKey={5.2}>Settings</MenuItem>
+                     <MenuItem eventKey={5.2}>Setting</MenuItem>
                    </NavDropdown>
                  </Nav>)
                }
