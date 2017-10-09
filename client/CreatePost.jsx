@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import Dropzone from 'react-dropzone'
 import axios from 'axios';
 import { Button, FormControl, ControlLabel, FormGroup, Checkbox, Radio, Input, Well, Label, InputGroup } from 'react-bootstrap';
+const request = require('superagent');
 
 class CreatePost extends React.Component {
   constructor(props) {
@@ -13,6 +14,7 @@ class CreatePost extends React.Component {
       instruments: [],
       customInstrument: '',
       musicsheet: '',
+      musicsheetprev: '',
       sendable: {},
       availableInstruments: ['guitar', 'drums']
     };
@@ -30,15 +32,23 @@ class CreatePost extends React.Component {
     }
     this.setState({sendable: sendable}, ()=> {
       var data = this.state.sendable;
-      axios.post('/forum', data)
-        .then(res => {
-          console.log(res);
-        })
-        .catch(err => {
-          console.log(err);
-        });
+      const req = request.post('/forum');
+      req.attach(this.state.musicsheet[0].name, this.state.musicsheet[0]);
+      for(let key in sendable) {
+        req.field(key, sendable[key]);
+      }
+      req.end(() => {
+        console.log('onDrop done');
+      });
+
+      // for(let key in sendable) {
+      //   .attach(key, JSON.stringify(sendable[key]));
+      //   console.log(key, sendable[key])
+      //   console.log(req)
+      // }
     })
   }
+
   setInput(e, input) {
     var state = {};
     state[input] = e.target.value;
@@ -48,7 +58,7 @@ class CreatePost extends React.Component {
     var instruments = this.state.instruments;
     instrument ? instrument = instrument : instrument = this.state.customInstrument;
     var indexToRemove = instruments.indexOf(instrument);
-  
+
     if (indexToRemove >= 0) {
       instruments.splice(indexToRemove, 1);
     } else if(instrument.length) {
@@ -63,31 +73,34 @@ class CreatePost extends React.Component {
         availableInstruments.push(instrument);
       }
       this.setState({availableInstruments: availableInstruments}, () => console.log(this.state.instruments))
- 
+
     });
   }
   onDrop(accepted, rejected){
     console.log(accepted[0].preview)
-    this.setState({musicsheet: accepted[0].preview}, () => {
-      console.log('accepted: ', this.state.musicsheet);
+    this.setState({
+      musicsheet: accepted,
+      musicsheetprev: accepted[0].preview
+    }, () => {
+      console.log('accepted: ', this.state.musicsheetprev);
     });
   }
 
   render() {
-    
+
 
     return (
       <form>
         <Button bsStyle='default' style={exit} onClick={()=> this.props.closePopup()}>
           X
         </Button>
-        
+
         <br/>
         <FormGroup>
           <ControlLabel>
             title
           </ControlLabel>
-          <FormControl type="text" placeholder="your title..." onKeyUp={(e)=> this.setInput(e, 'title')}> 
+          <FormControl type="text" placeholder="your title..." onKeyUp={(e)=> this.setInput(e, 'title')}>
 
           </FormControl>
             <ControlLabel>
@@ -96,7 +109,7 @@ class CreatePost extends React.Component {
             <FormControl componentClass="textarea" placeholder='your message...' onKeyUp={(e)=>this.setInput(e, 'description')}>
             </FormControl>
         </FormGroup>
-       
+
         <Well>
           <FormGroup>
             <InputGroup>
@@ -111,7 +124,7 @@ class CreatePost extends React.Component {
             </ControlLabel>
             <br/>
               {
-                this.state.availableInstruments.map((instrument) => 
+                this.state.availableInstruments.map((instrument) =>
                   <Checkbox style={checkbox} inline onClick={()=> this.addInstrument(instrument)}>
                     {instrument}
                   </Checkbox>
@@ -123,10 +136,10 @@ class CreatePost extends React.Component {
             <ControlLabel>Listed instruments in your post...(click to remove)</ControlLabel>
             <br/>
             <ControlLabel>
-              {this.state.instruments.map((instrument, key) => 
-                <Radio style={checkbox} onChange={(e)=>console.log(e)} onClick={(e)=>{this.addInstrument(instrument)}} inline checked> 
+              {this.state.instruments.map((instrument, key) =>
+                <Radio style={checkbox} onChange={(e)=>console.log(e)} onClick={(e)=>{this.addInstrument(instrument)}} inline checked>
                  <Well>
-                  {  instrument + ' '} 
+                  {  instrument + ' '}
                 </Well>
                 </Radio>
               )}
@@ -139,22 +152,22 @@ class CreatePost extends React.Component {
             <Dropzone onDrop={this.onDrop.bind(this)}> Click to upload musicsheet
             </Dropzone>
           </div>
-          
+
           <div style={sheetWrapper}>
             <Label bsStyle='info'>
               {'sheet uploaded'}
             </Label>
             <br/>
             {' '}
-            <img style={musicSheet} src={`${this.state.musicsheet}`}/>
+            <img style={musicSheet} src={`${this.state.musicsheetprev}`}/>
           </div>
-  
+
           <br/>
           <Button bsSize='large' bsStyle='success' onClick={this.constructPost.bind(this)}>
            Post to thread
           </Button>
         </div>
-       
+
       </form>
     )
   }

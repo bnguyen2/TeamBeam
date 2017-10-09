@@ -16,7 +16,7 @@ const Knex = require('knex');
 const db = Knex(dbConfig);
 const store = new KnexSessionStore({ knex: db, tablename: 'sessions' });
 
-app.use(bodyParser.json());
+app.use(bodyParser.json({limit: '200mb'}));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 
@@ -35,6 +35,7 @@ app.use('/', routes);
 
 app.use(express.static('public'));
 app.use(express.static('dist'));
+app.use(express.static('musicsheet'));
 
 app.listen(PORT, () => {
   console.log(`Listening on port ${PORT}`);

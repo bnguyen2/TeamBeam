@@ -2,7 +2,7 @@ const path = require('path');
 const routes = require('express').Router();
 const models = require('../db/models');
 const login = require('./login');
-
+const formidable = require('formidable');
 /* ---------------------------- Handle GET Request ---------------------------- */
 
 routes.get('/', (req, res) => {
@@ -160,15 +160,26 @@ routes.post('/signup', (req, res) => {
 });
 
 routes.post('/forum', (req, res) => {
-  models.Thread.forge(req.body).save()
-  .then((results) => {
-    console.log(results)
-    res.status(200);
-    res.end();
-  }, (err) => {
-    console.log('error saving a thread', err);
-    res.status(400);
-    res.end();
+  // Save musicsheet
+  let form = new formidable.IncomingForm();
+  form.uploadDir = __dirname + "/../musicsheet";
+  form.keepExtensions = true;
+  form.parse(req, (err, fields, files) => {
+    // Create thread
+    console.log('files', files);
+    fields.musicsheet = path.basename(files[Object.getOwnPropertyNames(files)[0]].path);
+    fields.created_at =  new Date();
+    fields.updated_at =  new Date();
+    models.Thread.forge(fields).save()
+    .then((results) => {
+      console.log(results)
+      res.status(200);
+      res.end();
+    }, (err) => {
+      console.log('error saving a thread', err);
+      res.status(400);
+      res.end();
+    });
   });
 });
 
