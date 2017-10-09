@@ -235,9 +235,10 @@ routes.delete('/forum/:threadId/posts/:postId', /* Auth Middleware */ (req, res)
 
 routes.patch('/profile/:id', (req, res) =>{
   let id = req.params.id;
-  console.log('LOOK HERE', req.body)
-  res.end()
-  //models.Profile.where({user_id: id}).save
+  models.Profile.where({user_id: id}).save(req.body, {patch: true}).then((results)=>{
+    res.end();
+  })
+
 });
 
 module.exports = routes;
