@@ -3,7 +3,7 @@ import Thread from './Thread.jsx';
 import $ from "jquery";
 import Modal from 'react-modal';
 import CreatePost from './CreatePost.jsx';
-import { Button, FormGroup, FormControl, InputGroup, Col, SplitButton, MenuItem } from 'react-bootstrap';
+import { Button, FormGroup, FormControl, InputGroup, Grid, Col, SplitButton, MenuItem } from 'react-bootstrap';
 
 
 const axios = require('axios');
@@ -50,7 +50,7 @@ export default class Forum extends React.Component {
       this.setState({threads: this.state.allThreads})
     } else {
       this.state.threads.forEach(thread => {
-        if (thread.title === this.state.searchText) {
+        if (thread.title === this.state.searchText.trim()) {
           threadsToSet.push(thread);
         }
       });
@@ -86,8 +86,10 @@ export default class Forum extends React.Component {
             </Col>
           </FormGroup>
         </form>
-        <br/><br/>
-
+       
+        <a href="#" onClick={this.openPopup.bind(this)}>
+           Create new post
+         </a>
         <Modal
           isOpen={this.state.popupIsOpen}
           onRequestClose={this.closePopup.bind(this)}
@@ -95,23 +97,22 @@ export default class Forum extends React.Component {
         >
           <CreatePost user={this.props.user} closePopup={this.closePopup.bind(this)}/>
         </Modal>
-
-        <Col xs={7}>
-          <Col xs={3}>
-            <a href="#" onClick={this.openPopup.bind(this)}>
-              Create new post
-            </a>
+       <br/><br/><br/>
+        <Grid>
+          <Col xs={1}>
           </Col>
-          <div className="threads">
-            {this.state.threads.map((thread) => {
-              return <Thread
-                threadData={thread}
-                key={thread.id}
-                user={this.props.user}
-              />
-            })}
-          </div>
-        </Col>
+          <Col xs={7}>
+            <div className="threads">
+              {this.state.threads.map((thread) => {
+                return <Thread
+                  threadData={thread}
+                  key={thread.id}
+                  user={this.props.user}
+                />
+              })}
+            </div>
+          </Col>
+        </Grid>
       </div>
     );
   }
