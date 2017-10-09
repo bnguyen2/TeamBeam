@@ -18,15 +18,15 @@ export default class Musician extends React.Component {
     return (
       <Grid>
         <Row >
-          <Col className="user"> <UserHeader user={this.props.user}/> </Col>
+          <Col> <UserHeader user={this.props.user}/> </Col>
         </Row>
         <Row>
-          <Col xs={6} md={6} className="about-me"> <AboutMe aboutme={this.props.profile}/> </Col>
-          <Col xs={6} md={6} className="recent-track"> <Tracks/> </Col>
+          <Col xs={6} md={6}> <AboutMe aboutme={this.props.profile}/> </Col>
+          <Col xs={6} md={6}> <Tracks/> </Col>
         </Row>
         <Row>
-          <Col xs={6} md={6} className="collaboration"> <Collaboration/> </Col>
-          <Col xs={6} md={6} className="albums"> <Albums/>  </Col>
+          <Col xs={6} md={6}> <Collaboration/> </Col>
+          <Col xs={6} md={6}> <Albums/>  </Col>
         </Row>
       </Grid>
     );

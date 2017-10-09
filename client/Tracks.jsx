@@ -1,9 +1,9 @@
 import React from 'react';
 
-// Likely refactor to state? Need to store tracks
+// Likely refactor. Need to store tracks
 
 const Tracks = (props) => (
-	<div>
+	<div className="recent-track">
 		<h3> Recent Tracks </h3>
 			<p> Limitless </p>
 	</div>
