@@ -123,20 +123,122 @@ describe('Sound Connect API:', function() {
       });
     });
 
+    it('should return a cookie upon a sccessful login', function(done) {
+      let cookieJar = rp.jar();
+      rp({
+        method: 'POST',
+        uri: `http://localhost:${PORT}/login`,
+        json: {
+          username: 'Austin',
+          password: 'Austin'
+        },
+        jar: cookieJar
+      })
+      .then(() => {
+        expect(cookieJar.getCookies(`http://localhost:${PORT}/`).length).to.equal(1);
+        done();
+      });
+    });
+
     it('should insert new session into sessions table', function(done) {
-      // rp({
-      //   method: 'POST',
-      //   uri: `http://localhost:${PORT}/login`,
-      //   json: {
-      //     username: 'Austin',
-      //     password: 'Austin'
-      //   }
-      // })
-      // .then((results) => {
-      //   expect(results.id).to.equal(1);
-      //   done();
-      // });
-      done()
+      rp({
+        method: 'POST',
+        uri: `http://localhost:${PORT}/login`,
+        json: {
+          username: 'Austin',
+          password: 'Austin'
+        }
+      })
+      .then((results) => {
+        return knex.raw('SELECT * FROM sessions');
+      })
+      .then((results) => {
+        expect(results.rows.length).to.equal(1);
+        done();
+      });
+    });
+  });
+
+  describe('POST /logout', function() {
+    it('should delete a session from sessions table', function(done) {
+      let cookieJar = rp.jar();
+      rp({
+        method: 'POST',
+        uri: `http://localhost:${PORT}/login`,
+        json: {
+          username: 'Austin',
+          password: 'Austin'
+        },
+        jar: cookieJar
+      })
+      .then(() => knex.raw('SELECT * FROM sessions'))
+      .then((results) => {
+        expect(results.rows.length).to.equal(1);
+        return rp({
+          method: 'POST',
+          uri: `http://localhost:${PORT}/logout`,
+          jar: cookieJar
+        })
+      })
+      .then(() => knex.raw('SELECT * FROM sessions'))
+      .then((results) => {
+        expect(results.rows.length).to.equal(0);
+        done()
+      });
+    });
+  });
+
+  describe('POST /signup', function() {
+    it('should insert the new user into users table', function(done) {
+      rp({
+        method: 'POST',
+        uri: `http://localhost:${PORT}/signup`,
+        json: {
+          username: 'New user',
+          password: 'New user\'s password',
+          profile: 'composer'
+        }
+      })
+      .then(() => models.User.byUsername('New user'))
+      .then((results) => {
+        expect(results.attributes.password).to.equal('New user\'s password');
+        done();
+      });
+    });
+
+    it('should return a cookie upon a sccessful signup', function(done) {
+      let cookieJar = rp.jar();
+      rp({
+        method: 'POST',
+        uri: `http://localhost:${PORT}/signup`,
+        json: {
+          username: 'New user',
+          password: 'New user\'s password',
+          profile: 'composer'
+        },
+        jar: cookieJar
+      })
+      .then(() => {
+        expect(cookieJar.getCookies(`http://localhost:${PORT}/`).length).to.equal(1);
+        done();
+      });
+    });
+
+    it('should insert a new session into sessions table', function(done) {
+      rp({
+        method: 'POST',
+        uri: `http://localhost:${PORT}/signup`,
+        json: {
+          username: 'New user',
+          password: 'New user\'s password',
+          profile: 'composer'
+        }
+      })
+      .then(() => knex.raw('SELECT * FROM sessions'))
+      .then((results) => {
+        expect(results.rows.length).to.equal(1);
+        done()
+      });
     });
   });
 
@@ -160,6 +262,40 @@ describe('Sound Connect API:', function() {
         expect(results.attributes).to.be.a('object');
         expect(results.attributes.user_id).to.be.equal(1);
         expect(results.attributes.description).to.equal('A description for dummy thread made by userId 1');
+        done()
+      });
+    });
+  });
+
+  describe('POST /forum/:threadId/posts', function() {
+    it('should insert a post into posts table', function(done) {
+      rp({
+        method: 'POST',
+        uri: `http://localhost:${PORT}/forum/1/posts`,
+        json: {
+          user_id: 11,
+          message: 'test post'
+        }
+      })
+      .then(() => models.Post.query('where', 'message', '=', 'test post').fetch())
+      .then((results) => {
+        expect(results.attributes.user_id).to.be.equal(11);
+        expect(results.attributes.thread_id).to.be.equal(1);
+        done()
+      });
+    });
+  });
+
+  describe('DELETE /forum/:threadId/posts/:postId', function() {
+    it('should delete the specified post from posts table', function(done) {
+      rp({
+        method: 'DELETE',
+        uri: `http://localhost:${PORT}/forum/1/posts/1`
+      })
+      .then(() => models.Post.query('where', 'id', '=', '1').fetch())
+      .then((results) => {
+        console.log(results);
+        expect(results).to.be.a('null');
         done()
       });
     });
