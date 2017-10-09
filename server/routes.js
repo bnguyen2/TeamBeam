@@ -185,6 +185,7 @@ routes.post('/forum/:threadId/posts', (req, res) => {
 });
 
 routes.post('/logout', (req, res) => {
+  console.log('req.session', req.session)
   req.session.destroy(function (err) {
     res.end();
   });
@@ -219,6 +220,13 @@ routes.delete('/forum/:threadId/posts/:postId', /* Auth Middleware */ (req, res)
       res.status(400);
       res.end();
     })
+});
+
+routes.patch('/profile/:id', (req, res) =>{
+  let id = req.params.id;
+  console.log('LOOK HERE', req.body)
+  res.end()
+  //models.Profile.where({user_id: id}).save
 });
 
 module.exports = routes;
